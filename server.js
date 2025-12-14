@@ -14,7 +14,7 @@ const dbConfig = {
   port: 3306,
   user: 'root',
   password: '',
-  database: 'data0'
+  database: 'nikhil-sweet-shop'
 };
 
 // Create a MySQL connection pool
