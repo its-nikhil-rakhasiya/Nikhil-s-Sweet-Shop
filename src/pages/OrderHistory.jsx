@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ShoppingBag, Eye, Package, Truck, XCircle } from 'lucide-react';
+import { ShoppingBag, FileText, Calendar, Package, IndianRupee, Eye, Truck, XCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { formatDateToLocal } from '../utils/dateUtils';
 
 export default function OrderHistory() {
     const [orders, setOrders] = useState([]);
@@ -104,9 +105,10 @@ export default function OrderHistory() {
                                 <h3 className="text-lg font-bold text-gray-800 dark:text-white">
                                     Order #{order.id}
                                 </h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                    {formatDate(order.created_at)}
-                                </p>
+                                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                                    <Calendar className="h-4 w-4 mr-2" />
+                                    {formatDateToLocal(order.created_at)}
+                                </div>
                             </div>
                             <div className="mt-2 md:mt-0">
                                 {getStatusBadge(order.status)}

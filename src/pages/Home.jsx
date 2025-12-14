@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Candy, MapPin, IndianRupee } from 'lucide-react';
+import { Candy, MapPin, IndianRupee, ShoppingCart, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
 import { Sparkles } from 'lucide-react';
+import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast';
 import { ArchiveX } from 'lucide-react';
-
-
-
-import SweetDetailsModal from '../components/SweetDetailsModal';
 
 export default function Home() {
   const [sweets, setSweets] = useState([]);
@@ -16,7 +13,7 @@ export default function Home() {
   const [categoryType, setCategoryType] = useState('');
   const [priceRange, setPriceRange] = useState('');
   const [citySweets, setCitySweets] = useState('');
-  const [selectedSweet, setSelectedSweet] = useState(null);
+  const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
     fetch('http://localhost:3001/api/sweets')
@@ -45,8 +42,13 @@ export default function Home() {
     return matchesSearch && matchesCategory && matchesCity && matchesPrice;
   });
 
-  const availableSweets = filteredSweets.filter(sweet => !sweet.sold);
-  const soldSweets = filteredSweets.filter(sweet => sweet.sold);
+  const availableSweets = filteredSweets.filter(
+    sweet => (sweet.stock_quantity || 0) > 0 && !sweet.sold
+  );
+  const outOfStockSweets = filteredSweets.filter(
+    sweet => (sweet.stock_quantity || 0) === 0 || sweet.sold
+  );
+
   const categories = [...new Set(sweets.map(sweet => sweet.category))];
   const cities = [...new Set(sweets.map(sweet => sweet.location))];
 
@@ -61,82 +63,76 @@ export default function Home() {
   return (
     <>
       <div className="space-y-10">
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-          <div className="relative">
+
+        {/* ===== FILTER BAR (UI UPDATED) ===== */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+
+          {/* Search */}
+          <div className="relative w-full md:w-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-800 dark:text-gray-400" />
             <input
               type="text"
               placeholder="Search by sweet name"
-              className="border border-gray-300 rounded-lg pl-11 pr-4 py-2.5 
-                                  text-base
-                                  focus:outline-none 
-                                  placeholder:text-gray-700 dark:placeholder:text-gray-300
-                                  shadow-md hover:shadow-lg transition-shadow duration-200
-                                  bg-white dark:bg-gray-800"
+              className="w-full border border-gray-300 rounded-lg
+                         pl-11 pr-4 py-2.5 text-base
+                         focus:outline-none
+                         placeholder:text-gray-700 dark:placeholder:text-gray-300
+                         shadow-md hover:shadow-lg transition-shadow duration-200
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-200"
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
+
+          {/* City */}
           <div className="w-full md:w-64">
             <select
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5
-                   text-base
-                   focus:outline-none
-                   shadow-md hover:shadow-lg transition-shadow duration-200
-                   bg-white dark:bg-gray-800
-                   text-gray-800 dark:text-gray-200
-                   cursor-pointer"
+                         text-base focus:outline-none
+                         shadow-md hover:shadow-lg transition-shadow duration-200
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-200 cursor-pointer"
               value={citySweets}
               onChange={e => setCitySweets(e.target.value)}
             >
               <option value="">All Cities</option>
-              {loading ? (
-                <option value="">Loading...</option>
-              ) : (
-                cities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
-                  </option>
-                ))
-              )}
+              {cities.map((city, index) => (
+                <option key={index} value={city}>
+                  {city}
+                </option>
+              ))}
             </select>
           </div>
 
+          {/* Category */}
           <div className="w-full md:w-64">
             <select
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5
-                   text-base
-                   focus:outline-none
-                   shadow-md hover:shadow-lg transition-shadow duration-200
-                   bg-white dark:bg-gray-800
-                   text-gray-800 dark:text-gray-200
-                   cursor-pointer"
+                         text-base focus:outline-none
+                         shadow-md hover:shadow-lg transition-shadow duration-200
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-200 cursor-pointer"
               value={categoryType}
               onChange={e => setCategoryType(e.target.value)}
             >
               <option value="">All Categories</option>
-              {loading ? (
-                <option value="">Loading...</option>
-              ) : (
-                categories.map((category, index) => (
-                  <option key={index} value={category}>
-                    {category}
-                  </option>
-                ))
-              )}
+              {categories.map((category, index) => (
+                <option key={index} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
 
-
+          {/* Price */}
           <div className="w-full md:w-64">
             <select
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5
-                   text-base
-                   focus:outline-none
-                   shadow-md hover:shadow-lg transition-shadow duration-200
-                   bg-white dark:bg-gray-800
-                   text-gray-800 dark:text-gray-200
-                   cursor-pointer"
+                         text-base focus:outline-none
+                         shadow-md hover:shadow-lg transition-shadow duration-200
+                         bg-white dark:bg-gray-800
+                         text-gray-800 dark:text-gray-200 cursor-pointer"
               value={priceRange}
               onChange={e => setPriceRange(e.target.value)}
             >
@@ -146,89 +142,128 @@ export default function Home() {
               <option value="Premium">Premium (Above ₹700)</option>
             </select>
           </div>
-
         </div>
+
+        {/* ===== AVAILABLE SWEETS ===== */}
         <div>
           <h2 className="flex items-center gap-2 text-xl font-bold mb-4 text-green-600 dark:text-green-400">
             <Sparkles className="h-6 w-6 text-green-500" />
             Available Sweets
           </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {availableSweets.map((sweet, index) => (
               <motion.div
                 key={index}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
-                whileHover={{ scale: 1.05 }}
+                className="group bg-white dark:bg-gray-800 rounded-2xl
+             shadow-md hover:shadow-lg transition-all duration-300
+             border border-gray-200 dark:border-gray-700 overflow-hidden"
+                whileHover={{ y: -3 }}
               >
                 {/* Image */}
                 <div className="p-4">
-                  <motion.img
+                  <img
                     src={
                       sweet.image ||
                       'https://images.unsplash.com/photo-1599909351323-3c1e8f05b0bf?auto=format&fit=crop&q=80&w=1000'
                     }
                     alt={sweet.sweet_name}
-                    className="w-full h-48 object-cover rounded-lg"
+                    className="w-full h-48 object-cover rounded-xl
+                 transition-transform duration-300
+                 group-hover:scale-[1.03]"
                   />
                 </div>
 
-                {/* Content */}
-                <div className="p-4 pt-0">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-                    {sweet.sweet_name}
-                  </h3>
-
-                  {/* Showcase grid */}
-                  <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <Candy className="h-4 w-4 text-pink-500" />
-                      <span className="text-gray-700 dark:text-gray-200">
-                        {sweet.type}
-                      </span>
+                {/* BENTO BODY */}
+                <div className="px-4 pb-4 grid grid-cols-3 gap-3 text-sm">
+                  {/* LEFT DETAILS */}
+                  <div className="col-span-2 grid grid-cols-2 gap-3">
+                    {/* Name */}
+                    <div className="col-span-2 bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Name</div>
+                      <div className="font-semibold text-gray-800 dark:text-white">
+                        {sweet.sweet_name}
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <MapPin className="h-4 w-4 text-blue-500" />
-                      <span className="text-gray-700 dark:text-gray-200">
-                        {sweet.location}
-                      </span>
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Category</div>
+                      <div className="font-medium">{sweet.category}</div>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        {sweet.weight}g
-                      </span>
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Type</div>
+                      <div className="font-medium">{sweet.type}</div>
                     </div>
 
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        {sweet.category}
-                      </span>
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Location</div>
+                      <div className="font-medium">{sweet.location}</div>
+                    </div>
+
+                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Weight</div>
+                      <div className="font-medium">{sweet.weight} g</div>
                     </div>
                   </div>
 
-                  {sweet.flavor && (
-                    <div className="mt-3 text-sm text-gray-600 dark:text-gray-300">
-                      Flavor: <span className="font-medium">{sweet.flavor}</span>
-                    </div>
-                  )}
-
-                  {/* Price + Order */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center text-green-600 dark:text-green-400 font-bold text-lg">
-                      <IndianRupee className="h-5 w-5 mr-1" />
-                      {sweet.price.toLocaleString()}
+                  {/* RIGHT ACTION PANEL */}
+                  <div className="flex flex-col justify-between">
+                    {/* Price */}
+                    <div className="bg-green-50 dark:bg-green-900/30 rounded-lg p-3">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Price</div>
+                      <div className="flex items-center text-green-600 dark:text-green-400 font-bold">
+                        <IndianRupee className="h-4 w-4 mr-1" />
+                        {sweet.price.toLocaleString()}
+                      </div>
                     </div>
 
+                    {/* Stock */}
+                    <div
+                      className={`rounded-lg p-3 mt-3
+          ${sweet.stock_quantity > 0
+                          ? 'bg-blue-50 dark:bg-blue-900/30'
+                          : 'bg-red-50 dark:bg-red-900/30'
+                        }`}
+                    >
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Stock</div>
+                      <div
+                        className={`font-semibold
+            ${sweet.stock_quantity > 0
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-red-600 dark:text-red-400'
+                          }`}
+                      >
+                        {sweet.stock_quantity > 0
+                          ? `${sweet.stock_quantity} Available`
+                          : 'Out of Stock'}
+                      </div>
+                    </div>
+
+                    {/* Button */}
                     <button
+                      disabled={sweet.stock_quantity <= 0}
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedSweet(sweet);
+
+                        const alreadyInCart = cartItems.find(
+                          item => item.id === sweet.id
+                        );
+
+                        if (alreadyInCart) {
+                          toast.error('Item already in cart');
+                          return;
+                        }
+
+                        addToCart({ ...sweet, quantity: 1 });
+                        toast.success('Added to cart');
                       }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition"
+                      className={`mt-3 py-2 rounded-lg font-semibold transition
+          ${sweet.stock_quantity > 0
+                          ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                          : 'bg-gray-400 text-white cursor-not-allowed'
+                        }`}
                     >
-                      Order Now
+                      {sweet.stock_quantity > 0 ? 'Order Now' : 'Unavailable'}
                     </button>
                   </div>
                 </div>
@@ -238,102 +273,42 @@ export default function Home() {
           </div>
         </div>
 
+        {/* ===== OUT OF STOCK ===== */}
         <div>
           <h2 className="flex items-center gap-2 text-xl font-bold mb-4 text-red-600 dark:text-red-400">
             <ArchiveX className="h-6 w-6 text-red-500" />
             Unavailable Sweets
           </h2>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {soldSweets.map((sweet, index) => (
-              <motion.div
+            {outOfStockSweets.map((sweet, index) => (
+              <div
                 key={index}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
-                whileHover={{ scale: 1.05 }}
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg opacity-70"
               >
-                {/* Image */}
+                <div className="p-3">
+                  <div className="overflow-hidden rounded-xl">
+                    <img
+                      src={
+                        sweet.image ||
+                        'https://images.unsplash.com/photo-1599909351323-3c1e8f05b0bf?auto=format&fit=crop&q=80&w=1000'
+                      }
+                      alt={sweet.sweet_name}
+                      className="w-full h-52 object-cover grayscale opacity-80"
+                    />
+
+                  </div>
+                </div>
+
                 <div className="p-4">
-                  <motion.img
-                    src={
-                      sweet.image ||
-                      'https://images.unsplash.com/photo-1599909351323-3c1e8f05b0bf?auto=format&fit=crop&q=80&w=1000'
-                    }
-                    alt={sweet.sweet_name}
-                    className="w-full h-48 object-cover rounded-lg"
-                  />
+                  <h3 className="text-xl font-bold dark:text-white">{sweet.sweet_name}</h3>
+                  <span className="text-red-600 font-semibold">Out of Stock</span>
                 </div>
-
-                {/* Content */}
-                <div className="p-4 pt-0">
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-                    {sweet.sweet_name}
-                  </h3>
-
-                  {/* Showcase grid */}
-                  <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <Candy className="h-4 w-4 text-pink-500" />
-                      <span className="text-gray-700 dark:text-gray-200">
-                        {sweet.type}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <MapPin className="h-4 w-4 text-blue-500" />
-                      <span className="text-gray-700 dark:text-gray-200">
-                        {sweet.location}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        {sweet.weight}g
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-700 rounded-md p-2">
-                      <span className="font-semibold text-gray-700 dark:text-gray-200">
-                        {sweet.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  {sweet.flavor && (
-                    <div className="mt-3 text-sm text-gray-600 dark:text-gray-300">
-                      Flavor: <span className="font-medium">{sweet.flavor}</span>
-                    </div>
-                  )}
-
-                  {/* Price + Order */}
-                  <div className="mt-4 flex items-center justify-between">
-                    <div className="flex items-center text-green-600 dark:text-green-400 font-bold text-lg">
-                      <IndianRupee className="h-5 w-5 mr-1" />
-                      {sweet.price.toLocaleString()}
-                    </div>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedSweet(sweet);
-                      }}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold transition"
-                    >
-                      Order Now
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {selectedSweet && (
-        <SweetDetailsModal
-          sweet={selectedSweet}
-          onClose={() => setSelectedSweet(null)}
-        />
-      )}
+      </div>
     </>
   );
 }

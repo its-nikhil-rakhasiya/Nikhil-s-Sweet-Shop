@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Package, ChevronDown, ChevronUp } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { formatDateToLocal } from '../utils/dateUtils';
 
 export default function OrderManagement() {
     const [orders, setOrders] = useState([]);
@@ -13,7 +15,7 @@ export default function OrderManagement() {
     }, []);
 
     const fetchOrders = () => {
-        fetch('http://localhost:3001/api/admin/orders')
+        fetch('http://localhost:3001/api/admin/orders/detailed')
             .then(res => res.json())
             .then(data => {
                 setOrders(data);
@@ -34,14 +36,32 @@ export default function OrderManagement() {
             });
 
             if (response.ok) {
-                setOrders(orders.map(order =>
-                    order.id === orderId ? { ...order, status: newStatus } : order
-                ));
+                // Fetch fresh data to show cascaded updates immediately
+                fetchOrders();
             } else {
                 alert('Failed to update order status');
             }
         } catch (error) {
             console.error('Error updating status:', error);
+            alert('Network error');
+        }
+    };
+
+    const handleItemStatusChange = async (itemId, newStatus) => {
+        try {
+            const response = await fetch(`http://localhost:3001/api/order-items/${itemId}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            });
+
+            if (response.ok) {
+                fetchOrders();
+            } else {
+                alert('Failed to update item status');
+            }
+        } catch (error) {
+            console.error('Error updating item status:', error);
             alert('Network error');
         }
     };
@@ -136,7 +156,7 @@ export default function OrderManagement() {
                                     <div>
                                         <p className="text-sm text-gray-600 dark:text-gray-400">Date</p>
                                         <p className="text-gray-800 dark:text-white">
-                                            {formatDate(order.created_at)}
+                                            {formatDateToLocal(order.created_at)}
                                         </p>
                                     </div>
 
@@ -204,6 +224,9 @@ export default function OrderManagement() {
                                                     <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
                                                         Item
                                                     </th>
+                                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                        Location
+                                                    </th>
                                                     <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
                                                         Quantity
                                                     </th>
@@ -213,22 +236,47 @@ export default function OrderManagement() {
                                                     <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">
                                                         Subtotal
                                                     </th>
+                                                    <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                        Delivery Status
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {order.items.map((item) => (
                                                     <tr key={item.id} className="border-t border-gray-200 dark:border-gray-700">
-                                                        <td className="px-4 py-2 text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-gray-800 dark:text-white">
                                                             {item.sweet_name}
                                                         </td>
-                                                        <td className="px-4 py-2 text-center text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
+                                                            {item.location || 'N/A'}
+                                                        </td>
+                                                        <td className="px-4 py-3 text-center text-gray-800 dark:text-white">
                                                             {item.quantity}
                                                         </td>
-                                                        <td className="px-4 py-2 text-right text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-right text-gray-800 dark:text-white">
                                                             ₹{item.price_per_unit.toLocaleString()}
                                                         </td>
-                                                        <td className="px-4 py-2 text-right font-semibold text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-right font-semibold text-gray-800 dark:text-white">
                                                             ₹{item.subtotal.toLocaleString()}
+                                                        </td>
+                                                        <td className="px-4 py-3 text-center">
+                                                            <select
+                                                                value={item.status || 'pending'}
+                                                                onChange={(e) => handleItemStatusChange(item.id, e.target.value)}
+                                                                className={`border rounded px-2 py-1 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 ${(item.status || 'pending') === 'pending'
+                                                                    ? 'bg-yellow-100 text-yellow-800 border-yellow-300'
+                                                                    : (item.status || 'pending') === 'shipped'
+                                                                        ? 'bg-blue-100 text-blue-800 border-blue-300'
+                                                                        : (item.status || 'pending') === 'delivered'
+                                                                            ? 'bg-green-100 text-green-800 border-green-300'
+                                                                            : 'bg-red-100 text-red-800 border-red-300'
+                                                                    }`}
+                                                            >
+                                                                <option value="pending">Pending</option>
+                                                                <option value="shipped">Shipped</option>
+                                                                <option value="delivered">Delivered</option>
+                                                                <option value="cancelled">Cancelled</option>
+                                                            </select>
                                                         </td>
                                                     </tr>
                                                 ))}

@@ -2,22 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Receipt, ArrowLeft, Package, Truck, XCircle, MapPin, User, Mail, Calendar, IndianRupee } from 'lucide-react';
+import { formatDateToLocal } from '../utils/dateUtils';
 
 export default function OrderReceipt() {
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [notFound, setNotFound] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:3001/api/orders/${orderId}`)
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 404) {
+                    setNotFound(true);
+                    setLoading(false);
+                    return null;
+                }
+                if (!res.ok) {
+                    throw new Error('Failed to fetch order');
+                }
+                return res.json();
+            })
             .then(data => {
-                setOrder(data);
+                if (data) {
+                    setOrder(data);
+                }
                 setLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching order:', error);
+                setNotFound(true);
                 setLoading(false);
             });
     }, [orderId]);
@@ -59,20 +74,9 @@ export default function OrderReceipt() {
         );
     }
 
-    if (!order) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh]">
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
-                    Order Not Found
-                </h2>
-                <button
-                    onClick={() => navigate('/orders')}
-                    className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600"
-                >
-                    Back to Orders
-                </button>
-            </div>
-        );
+    if (notFound || !order) {
+        navigate('/404', { replace: true });
+        return null;
     }
 
     return (
@@ -122,7 +126,7 @@ export default function OrderReceipt() {
                                 <div>
                                     <p className="text-sm text-gray-600 dark:text-gray-400">Order Date</p>
                                     <p className="font-semibold text-gray-800 dark:text-white">
-                                        {formatDate(order.created_at)}
+                                        {formatDateToLocal(order.created_at)}
                                     </p>
                                 </div>
                             </div>

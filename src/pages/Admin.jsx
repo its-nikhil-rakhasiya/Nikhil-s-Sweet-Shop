@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import Cookies from 'js-cookie';
 
 export default function Admin() {
   const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ export default function Admin() {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:3001/api/login', {
+      const response = await fetch('http://localhost:3001/api/admin/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +26,9 @@ export default function Admin() {
       const data = await response.json();
 
       if (response.ok) {
-        login(data.id);
+        // Set both cookies for compatibility
+        login(data.user.id);
+        Cookies.set('adminAuth', JSON.stringify(data.user), { expires: 1 });
         navigate('/admin/dashboard');
       } else {
         setError(data.error || 'Invalid credentials');

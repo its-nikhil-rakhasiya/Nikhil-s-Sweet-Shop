@@ -3,11 +3,13 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { Store, User, LogOut, ShoppingBag } from 'lucide-react';
 import { getTheme, setTheme } from '../utils/theme.js';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 export default function Layout() {
   const [theme, setCurrentTheme] = React.useState(getTheme);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const { user, userLogout } = useAuth();
+  const { getCartCount } = useCart();
   const navigate = useNavigate();
 
   const toggleTheme = () => {
@@ -41,6 +43,17 @@ export default function Layout() {
                 <Link to="/admin" className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
                   Admin
                 </Link>
+
+                {/* Cart Icon with Badge */}
+                <Link to="/cart" className="relative text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                  <ShoppingBag className="h-6 w-6" />
+                  {getCartCount() > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                      {getCartCount()}
+                    </span>
+                  )}
+                </Link>
+
                 {user ? (
                   <div className="relative">
                     <button
@@ -89,7 +102,7 @@ export default function Layout() {
       </div>
       <footer className="bg-gray-100 dark:bg-gray-800 text-center py-4">
         <div className="text-sm text-gray-700 dark:text-gray-300">
-          <p>&copy; 2025 Nikhl's Sweet Shop, All Rights Reserved.</p>
+          <p>&copy; 2025 Nikhil's Sweet Shop, All Rights Reserved.</p>
         </div>
       </footer>
     </div>
