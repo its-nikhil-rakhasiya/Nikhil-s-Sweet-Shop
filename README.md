@@ -33,7 +33,7 @@ Stock availability
 
 Order Now action
 
-![Home Page – Available Sweets](./img/0.png)
+![Home Page – Available Sweets](./Readme-img/0.png)
 
 ---
 
@@ -49,7 +49,7 @@ Subtotal & total calculation
 
 Remove item option
 
-![Shopping Cart](./img/1.png)
+![Shopping Cart](./Readme-img/1.png)
 
 ---
 
@@ -65,7 +65,7 @@ Total amount calculation
 
 Place Order action
 
-![Checkout Page](./img/2.png)
+![Checkout Page](./Readme-img/2.png)
 
 ---
 
@@ -81,7 +81,7 @@ Total amount
 
 View receipt option
 
-![My Orders](./img/3.png)
+![My Orders](./Readme-img/3.png)
 
 ---
 
@@ -101,7 +101,7 @@ Ordered items
 
 Total amount
 
-![Order Receipt](./img/4.png)
+![Order Receipt](./Readme-img/4.png)
 
 ---
 
@@ -134,7 +134,7 @@ Production-ready UI
 - Secure access for administrators
 - Prevent unauthorized management actions
 
-![Admin Login](./img/admin1.png)
+![Admin Login](./Readme-img/admin1.png)
 
 ---
 
@@ -147,7 +147,7 @@ Production-ready UI
 - Add new sweet
 - Edit, delete, and restock sweets
 
-![Admin Dashboard – Sweets](./img/admin2.png)
+![Admin Dashboard – Sweets](./Readme-img/admin2.png)
 
 ---
 
@@ -160,7 +160,7 @@ Production-ready UI
 - Update order status (Pending / Delivered)
 - Expand order items
 
-![Orders Management](./img/admin3.png)
+![Orders Management](./Readme-img/admin3.png)
 
 ---
 
@@ -174,7 +174,7 @@ Production-ready UI
 - Initial stock quantity
 - Image URL support
 
-![Add New Sweet](./img/AddSweet.png)
+![Add New Sweet](./Readme-img/AddSweet.png)
 
 ---
 
@@ -186,7 +186,7 @@ Production-ready UI
 - Mark sweet as sold
 - Update image
 
-![Edit Sweet](./img/EditSweet.png)
+![Edit Sweet](./Readme-img/EditSweet.png)
 
 ---
 
@@ -197,7 +197,7 @@ Production-ready UI
 - Immediate inventory reflection
 - Backend-validated stock update
 
-![Restock Sweet](./img/StockSweet.png)
+![Restock Sweet](./Readme-img/StockSweet.png)
 
 ---
 
@@ -227,7 +227,7 @@ This admin panel ensures **correct inventory handling and business rule enforcem
 - Redirect to home and cart after login
 - Protected user actions (orders, checkout)
 
-![User Login](./img/UserLogin.png)
+![User Login](./Readme-img/UserLogin.png)
 
 ---
 
@@ -239,7 +239,7 @@ This admin panel ensures **correct inventory handling and business rule enforcem
 - Password validation (minimum length)
 - Seamless transition to login after registration
 
-![User Registration](./img/UserRegister.png)
+![User Registration](./Readme-img/UserRegister.png)
 
 ---
 
