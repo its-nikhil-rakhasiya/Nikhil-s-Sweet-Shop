@@ -15,7 +15,7 @@ export default function OrderManagement() {
     }, []);
 
     const fetchOrders = () => {
-        fetch('http://localhost:3001/api/admin/orders/detailed')
+        fetch('/api/admin/orders/detailed')
             .then(res => res.json())
             .then(data => {
                 setOrders(data);
@@ -29,7 +29,7 @@ export default function OrderManagement() {
 
     const handleStatusChange = async (orderId, newStatus) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/orders/${orderId}/status`, {
+            const response = await fetch(`/api/orders/${orderId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })
@@ -49,7 +49,7 @@ export default function OrderManagement() {
 
     const handleItemStatusChange = async (itemId, newStatus) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/order-items/${itemId}/status`, {
+            const response = await fetch(`/api/order-items/${itemId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })

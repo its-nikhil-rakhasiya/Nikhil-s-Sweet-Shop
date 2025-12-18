@@ -16,7 +16,7 @@ export default function Home() {
   const { addToCart, cartItems } = useCart();
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/sweets')
+    fetch('/api/sweets')
       .then(res => res.json())
       .then(data => {
         setSweets(data);

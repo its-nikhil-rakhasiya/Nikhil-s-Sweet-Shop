@@ -82,7 +82,7 @@ export default function AdminDashboard() {
         updatedSweet.stock_quantity = 0;
       }
 
-      const response = await fetch(`http://localhost:3001/api/sweets/${updatedSweet.id}`, {
+      const response = await fetch(`/api/sweets/${updatedSweet.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedSweet)
@@ -107,7 +107,7 @@ export default function AdminDashboard() {
     if (!validateSweet(newSweet)) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/addsweet', {
+      const response = await fetch('/api/addsweet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSweet),
@@ -128,7 +128,7 @@ export default function AdminDashboard() {
 
   const fetchSweets = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/sweets');
+      const response = await fetch('/api/sweets');
       const data = await response.json();
       setSweets(data);
     } catch (error) {
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/admin/login', {
+      const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -192,7 +192,7 @@ export default function AdminDashboard() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/sweets/${editingSweet.id}`,
+        `/api/sweets/${editingSweet.id}`,
         {
           method: 'PUT',
           headers: {
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
     const confirmDelete = window.confirm('Are you sure you want to delete this sweet?');
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://localhost:3001/api/sweets/${sweetId}`, {
+        const response = await fetch(`/api/sweets/${sweetId}`, {
           method: 'DELETE',
         });
 
@@ -255,7 +255,7 @@ export default function AdminDashboard() {
 
   const handleStockUpdate = async (sweetId, newStock) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/sweets/${sweetId}/stock`, {
+      const response = await fetch(`/api/sweets/${sweetId}/stock`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock_quantity: parseInt(newStock) })

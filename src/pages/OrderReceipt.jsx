@@ -12,7 +12,7 @@ export default function OrderReceipt() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/orders/${orderId}`)
+        fetch(`/api/orders/${orderId}`)
             .then(res => {
                 if (res.status === 404) {
                     setNotFound(true);

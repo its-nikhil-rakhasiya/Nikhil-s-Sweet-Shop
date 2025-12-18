@@ -60,7 +60,7 @@ export default function UserLogin() {
             }
 
             try {
-                const response = await fetch('http://localhost:3001/api/register', {
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -84,7 +84,7 @@ export default function UserLogin() {
             }
         } else {
             try {
-                const response = await fetch('http://localhost:3001/api/user/login', {
+                const response = await fetch('/api/user/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -15,7 +15,7 @@ export default function UserManagement() {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/admin/users');
+            const response = await fetch('/api/admin/users');
             const data = await response.json();
             setUsers(data);
             setLoading(false);
@@ -29,7 +29,7 @@ export default function UserManagement() {
     const handleAddUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/api/admin/users', {
+            const response = await fetch('/api/admin/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newUser)
@@ -54,7 +54,7 @@ export default function UserManagement() {
         if (!confirm(`Are you sure you want to delete user ${email}?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/users/${userId}`, {
+            const response = await fetch(`/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
 
@@ -77,7 +77,7 @@ export default function UserManagement() {
         if (!confirm(`Are you sure you want to ${action} ${email}?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/users/${userId}/ban`, {
+            const response = await fetch(`/api/admin/users/${userId}/ban`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ is_banned: newStatus })

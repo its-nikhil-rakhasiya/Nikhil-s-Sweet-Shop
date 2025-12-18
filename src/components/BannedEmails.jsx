@@ -15,7 +15,7 @@ export default function BannedEmails() {
 
     const fetchBannedEmails = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/admin/banned-emails');
+            const response = await fetch('/api/admin/banned-emails');
             const data = await response.json();
             setBannedEmails(data);
             setLoading(false);
@@ -29,7 +29,7 @@ export default function BannedEmails() {
     const handleBanEmail = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/api/admin/banned-emails', {
+            const response = await fetch('/api/admin/banned-emails', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newBan)
@@ -54,7 +54,7 @@ export default function BannedEmails() {
         if (!confirm(`Are you sure you want to unban ${email}?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/banned-emails/${banId}`, {
+            const response = await fetch(`/api/admin/banned-emails/${banId}`, {
                 method: 'DELETE'
             });
 

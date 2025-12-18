@@ -13,7 +13,7 @@ export default function OrderHistory() {
 
     useEffect(() => {
         if (user) {
-            fetch(`http://localhost:3001/api/orders/user/${user.id}`)
+            fetch(`/api/orders/user/${user.id}`)
                 .then(res => res.json())
                 .then(data => {
                     setOrders(data);
