@@ -7,6 +7,7 @@
     "dev": "node server.js",
     "build": "vite build",
     "lint": "eslint .",
+    "db:seed": "node scripts/seed_db.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,7 +19,7 @@
     "framer-motion": "^11.16.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.344.0",
-    "mysql2": "^3.9.2",
+    "pg": "^8.16.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.6.0",
