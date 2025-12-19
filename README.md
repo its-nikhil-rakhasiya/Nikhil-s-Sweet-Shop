@@ -101,6 +101,8 @@ Features shown:
 ### 🔐 Admin Login
 
 **Purpose:**
+- Admin ID = admin@gmail.com
+- Admin Password = admin123
 - Secure access for administrators
 - Prevent unauthorized management actions
 
