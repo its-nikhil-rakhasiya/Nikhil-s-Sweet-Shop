@@ -42,7 +42,8 @@ export default function Checkout() {
                 }))
             };
 
-            const response = await fetch('http://localhost:3001/api/orders', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
@@ -71,7 +72,7 @@ export default function Checkout() {
     if (orderPlaced) {
         return (
             <div className="max-w-2xl mx-auto">
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 text-center">
+                <div className="bg-white rounded-lg shadow-lg p-8 text-center">
                     <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
@@ -79,13 +80,13 @@ export default function Checkout() {
                     >
                         <CheckCircle className="h-10 w-10 text-green-600" />
                     </motion.div>
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
                         Order Placed Successfully!
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-600">
                         Your order will be delivered soon.
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    <p className="text-sm text-gray-500 mt-2">
                         Returning to homepage...
                     </p>
                 </div>
@@ -97,50 +98,50 @@ export default function Checkout() {
         <div className="max-w-5xl mx-auto">
             <div className="flex items-center space-x-3 mb-6">
                 <ShoppingCart className="h-8 w-8 text-blue-600" />
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Checkout</h1>
+                <h1 className="text-3xl font-bold text-gray-800">Checkout</h1>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                    <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">
                             Delivery Information
                         </h2>
 
                         <div className="space-y-4">
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                                <label className="block text-gray-700 mb-2 font-medium">
                                     Full Name
                                 </label>
                                 <input
                                     type="text"
                                     value={user.full_name}
                                     disabled
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                                <label className="block text-gray-700 mb-2 font-medium">
                                     Email
                                 </label>
                                 <input
                                     type="email"
                                     value={user.email}
                                     disabled
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                                <label className="block text-gray-700 mb-2 font-medium">
                                     Delivery Address *
                                 </label>
                                 <textarea
                                     value={deliveryAddress}
                                     onChange={(e) => setDeliveryAddress(e.target.value)}
                                     placeholder="Enter your complete delivery address..."
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     rows="4"
                                     required
                                 />
@@ -148,15 +149,15 @@ export default function Checkout() {
                         </div>
                     </div>
 
-                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                    <div className="bg-white rounded-lg shadow-lg p-6">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">
                             Order Items
                         </h2>
                         <div className="space-y-4">
                             {cartItems.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-4"
+                                    className="flex items-center justify-between border-b border-gray-200 pb-4"
                                 >
                                     <div className="flex items-center space-x-4">
                                         <img
@@ -165,18 +166,18 @@ export default function Checkout() {
                                             className="w-16 h-16 object-cover rounded-lg"
                                         />
                                         <div>
-                                            <h3 className="font-semibold text-gray-800 dark:text-white">
+                                            <h3 className="font-semibold text-gray-800">
                                                 {item.sweet_name}
                                             </h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            <p className="text-sm text-gray-600">
                                                 Quantity: {item.quantity} × ₹{item.price.toLocaleString()}
                                             </p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-500">
+                                            <p className="text-xs text-gray-500">
                                                 From: {item.location}
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center text-green-600 dark:text-green-400 font-bold">
+                                    <div className="flex items-center text-green-600 font-bold">
                                         <IndianRupee className="h-5 w-5" />
                                         {(item.price * item.quantity).toLocaleString()}
                                     </div>
@@ -187,27 +188,27 @@ export default function Checkout() {
                 </div>
 
                 <div className="lg:col-span-1">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sticky top-4">
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                    <div className="bg-white rounded-lg shadow-lg p-6 sticky top-4">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">
                             Order Summary
                         </h2>
 
                         <div className="space-y-3 mb-6">
-                            <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                            <div className="flex justify-between text-gray-700">
                                 <span>Subtotal:</span>
                                 <div className="flex items-center font-semibold">
                                     <IndianRupee className="h-4 w-4" />
                                     {getCartTotal().toLocaleString()}
                                 </div>
                             </div>
-                            <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                            <div className="flex justify-between text-gray-700">
                                 <span>Delivery:</span>
                                 <span className="text-green-600 font-semibold">FREE</span>
                             </div>
-                            <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
-                                <div className="flex justify-between text-xl font-bold text-gray-800 dark:text-white">
+                            <div className="border-t border-gray-300 pt-3">
+                                <div className="flex justify-between text-xl font-bold text-gray-800">
                                     <span>Total:</span>
-                                    <div className="flex items-center text-green-600 dark:text-green-400">
+                                    <div className="flex items-center text-green-600">
                                         <IndianRupee className="h-6 w-6" />
                                         {getCartTotal().toLocaleString()}
                                     </div>
@@ -225,7 +226,7 @@ export default function Checkout() {
                             {loading ? 'Placing Order...' : 'Place Order'}
                         </motion.button>
 
-                        <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
+                        <p className="text-xs text-gray-500 text-center mt-4">
                             By placing your order, you agree to our Terms of Service and Privacy Policy
                         </p>
                     </div>

@@ -56,7 +56,8 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                 ]
             };
 
-            const response = await fetch('http://localhost:3001/api/orders', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
@@ -92,7 +93,7 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                     initial={{ scale: 0.9, y: 20 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.9, y: 20 }}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {orderPlaced ? (
@@ -104,53 +105,53 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                             >
                                 <ShoppingCart className="h-10 w-10 text-green-600" />
                             </motion.div>
-                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">
                                 Order Placed Successfully!
                             </h2>
-                            <p className="text-gray-600 dark:text-gray-300">
+                            <p className="text-gray-600">
                                 Your order will be delivered soon.
                             </p>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                            <p className="text-sm text-gray-500 mt-2">
                                 Redirecting to order history...
                             </p>
                         </div>
                     ) : showCheckout ? (
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                                <h2 className="text-2xl font-bold text-gray-800">
                                     Checkout
                                 </h2>
                                 <button
                                     onClick={() => setShowCheckout(false)}
-                                    className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                                    className="text-gray-500 hover:text-gray-700"
                                 >
                                     ← Back
                                 </button>
                             </div>
 
-                            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-4">
-                                <h3 className="font-semibold text-gray-800 dark:text-white mb-2">
+                            <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                                <h3 className="font-semibold text-gray-800 mb-2">
                                     Order Summary
                                 </h3>
-                                <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                                <div className="flex justify-between text-gray-700">
                                     <span>{sweet.sweet_name} × {quantity}</span>
                                     <span>₹{sweet.price} × {quantity}</span>
                                 </div>
-                                <div className="flex justify-between font-bold text-lg text-gray-800 dark:text-white mt-2 pt-2 border-t border-gray-300 dark:border-gray-600">
+                                <div className="flex justify-between font-bold text-lg text-gray-800 mt-2 pt-2 border-t border-gray-300">
                                     <span>Total</span>
                                     <span>₹{totalPrice.toLocaleString()}</span>
                                 </div>
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                                <label className="block text-gray-700 mb-2 font-medium">
                                     Delivery Address
                                 </label>
                                 <textarea
                                     value={deliveryAddress}
                                     onChange={(e) => setDeliveryAddress(e.target.value)}
                                     placeholder="Enter your complete delivery address..."
-                                    className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                                     rows="4"
                                 />
                             </div>
@@ -175,48 +176,48 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                                 />
                                 <button
                                     onClick={onClose}
-                                    className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                    className="absolute top-4 right-4 bg-white rounded-full p-2 hover:bg-gray-100"
                                 >
-                                    <X className="h-6 w-6 text-gray-700 dark:text-gray-300" />
+                                    <X className="h-6 w-6 text-gray-700" />
                                 </button>
                             </div>
 
                             <div className="p-6">
-                                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                                <h2 className="text-3xl font-bold text-gray-800 mb-2">
                                     {sweet.sweet_name}
                                 </h2>
 
                                 <div className="grid grid-cols-2 gap-4 mb-4">
                                     <div>
-                                        <span className="text-gray-600 dark:text-gray-400">Category:</span>
-                                        <p className="font-semibold text-gray-800 dark:text-white">{sweet.category}</p>
+                                        <span className="text-gray-600">Category:</span>
+                                        <p className="font-semibold text-gray-800">{sweet.category}</p>
                                     </div>
                                     <div>
-                                        <span className="text-gray-600 dark:text-gray-400">Weight:</span>
-                                        <p className="font-semibold text-gray-800 dark:text-white">{sweet.weight}g</p>
+                                        <span className="text-gray-600">Weight:</span>
+                                        <p className="font-semibold text-gray-800">{sweet.weight}g</p>
                                     </div>
                                     {sweet.flavor && (
                                         <div>
-                                            <span className="text-gray-600 dark:text-gray-400">Flavor:</span>
-                                            <p className="font-semibold text-gray-800 dark:text-white">{sweet.flavor}</p>
+                                            <span className="text-gray-600">Flavor:</span>
+                                            <p className="font-semibold text-gray-800">{sweet.flavor}</p>
                                         </div>
                                     )}
                                     <div>
-                                        <span className="text-gray-600 dark:text-gray-400">Type:</span>
-                                        <p className="font-semibold text-gray-800 dark:text-white">{sweet.type}</p>
+                                        <span className="text-gray-600">Type:</span>
+                                        <p className="font-semibold text-gray-800">{sweet.type}</p>
                                     </div>
                                 </div>
 
                                 <div className="mb-6">
-                                    <span className="text-gray-600 dark:text-gray-400">Location:</span>
-                                    <p className="font-semibold text-gray-800 dark:text-white">{sweet.location}</p>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{sweet.shop_address}</p>
+                                    <span className="text-gray-600">Location:</span>
+                                    <p className="font-semibold text-gray-800">{sweet.location}</p>
+                                    <p className="text-sm text-gray-500">{sweet.shop_address}</p>
                                 </div>
 
-                                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                                <div className="bg-gray-100 p-4 rounded-lg mb-6">
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="text-gray-700 dark:text-gray-300">Price per box:</span>
-                                        <div className="flex items-center text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                        <span className="text-gray-700">Price per box:</span>
+                                        <div className="flex items-center text-2xl font-bold text-blue-600">
                                             <IndianRupee className="h-6 w-6" />
                                             {sweet.price.toLocaleString()}
                                         </div>
@@ -224,34 +225,34 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                                 </div>
 
                                 <div className="flex items-center justify-between mb-6">
-                                    <span className="text-gray-700 dark:text-gray-300 font-medium">Quantity:</span>
+                                    <span className="text-gray-700 font-medium">Quantity:</span>
                                     <div className="flex items-center space-x-4">
                                         <motion.button
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => handleQuantityChange(-1)}
                                             disabled={quantity <= 1}
-                                            className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center disabled:opacity-50"
+                                            className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50"
                                         >
-                                            <Minus className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                                            <Minus className="h-5 w-5 text-gray-700" />
                                         </motion.button>
-                                        <span className="text-2xl font-bold text-gray-800 dark:text-white w-12 text-center">
+                                        <span className="text-2xl font-bold text-gray-800 w-12 text-center">
                                             {quantity}
                                         </span>
                                         <motion.button
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => handleQuantityChange(1)}
                                             disabled={quantity >= 50}
-                                            className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center disabled:opacity-50"
+                                            className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center disabled:opacity-50"
                                         >
-                                            <Plus className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+                                            <Plus className="h-5 w-5 text-gray-700" />
                                         </motion.button>
                                     </div>
                                 </div>
 
-                                <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-6">
+                                <div className="bg-gray-100 p-4 rounded-lg mb-6">
                                     <div className="flex items-center justify-between">
-                                        <span className="text-lg text-gray-700 dark:text-gray-300">Total Price:</span>
-                                        <div className="flex items-center text-3xl font-bold text-green-600 dark:text-green-400">
+                                        <span className="text-lg text-gray-700">Total Price:</span>
+                                        <div className="flex items-center text-3xl font-bold text-green-600">
                                             <IndianRupee className="h-8 w-8" />
                                             {totalPrice.toLocaleString()}
                                         </div>

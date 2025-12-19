@@ -12,7 +12,8 @@ export default function OrderReceipt() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3001/api/orders/${orderId}`)
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        fetch(`${API_URL}/api/orders/${orderId}`)
             .then(res => {
                 if (res.status === 404) {
                     setNotFound(true);
@@ -83,7 +84,7 @@ export default function OrderReceipt() {
         <div className="max-w-4xl mx-auto">
             <button
                 onClick={() => navigate('/orders')}
-                className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 mb-6"
+                className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 mb-6"
             >
                 <ArrowLeft className="h-5 w-5" />
                 <span>Back to Orders</span>
@@ -92,7 +93,7 @@ export default function OrderReceipt() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden"
+                className="bg-white rounded-2xl shadow-2xl overflow-hidden"
             >
                 <div className="bg-blue-600 p-6 text-white">
                     <div className="flex items-center space-x-3 mb-2">
@@ -108,24 +109,24 @@ export default function OrderReceipt() {
                             <div className="flex items-start space-x-3">
                                 <User className="h-5 w-5 text-gray-500 mt-1" />
                                 <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">Customer Name</p>
-                                    <p className="font-semibold text-gray-800 dark:text-white">{order.full_name}</p>
+                                    <p className="text-sm text-gray-600">Customer Name</p>
+                                    <p className="font-semibold text-gray-800">{order.full_name}</p>
                                 </div>
                             </div>
 
                             <div className="flex items-start space-x-3">
                                 <Mail className="h-5 w-5 text-gray-500 mt-1" />
                                 <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>
-                                    <p className="font-semibold text-gray-800 dark:text-white">{order.email}</p>
+                                    <p className="text-sm text-gray-600">Email</p>
+                                    <p className="font-semibold text-gray-800">{order.email}</p>
                                 </div>
                             </div>
 
                             <div className="flex items-start space-x-3">
                                 <Calendar className="h-5 w-5 text-gray-500 mt-1" />
                                 <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">Order Date</p>
-                                    <p className="font-semibold text-gray-800 dark:text-white">
+                                    <p className="text-sm text-gray-600">Order Date</p>
+                                    <p className="font-semibold text-gray-800">
                                         {formatDateToLocal(order.created_at)}
                                     </p>
                                 </div>
@@ -136,22 +137,22 @@ export default function OrderReceipt() {
                             <div className="flex items-start space-x-3">
                                 <MapPin className="h-5 w-5 text-gray-500 mt-1" />
                                 <div>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">Delivery Address</p>
-                                    <p className="font-semibold text-gray-800 dark:text-white">
+                                    <p className="text-sm text-gray-600">Delivery Address</p>
+                                    <p className="font-semibold text-gray-800">
                                         {order.delivery_address}
                                     </p>
                                 </div>
                             </div>
 
                             <div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Order Status</p>
+                                <p className="text-sm text-gray-600 mb-2">Order Status</p>
                                 {getStatusBadge(order.status)}
                             </div>
                         </div>
                     </div>
 
-                    <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
+                    <div className="border-t border-gray-200 pt-6">
+                        <h2 className="text-xl font-bold text-gray-800 mb-4">
                             Order Items
                         </h2>
 
@@ -159,18 +160,18 @@ export default function OrderReceipt() {
                             {order.items.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-4 rounded-lg"
+                                    className="flex justify-between items-center bg-gray-50 p-4 rounded-lg"
                                 >
                                     <div className="flex-1">
-                                        <h3 className="font-semibold text-gray-800 dark:text-white">
+                                        <h3 className="font-semibold text-gray-800">
                                             {item.sweet_name}
                                         </h3>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                        <p className="text-sm text-gray-600">
                                             ₹{item.price_per_unit.toLocaleString()} × {item.quantity}
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold text-gray-800 dark:text-white">
+                                        <p className="font-bold text-gray-800">
                                             ₹{item.subtotal.toLocaleString()}
                                         </p>
                                     </div>
@@ -178,23 +179,23 @@ export default function OrderReceipt() {
                             ))}
                         </div>
 
-                        <div className="border-t border-gray-300 dark:border-gray-600 pt-4">
+                        <div className="border-t border-gray-300 pt-4">
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center space-x-2">
-                                    <IndianRupee className="h-6 w-6 text-gray-700 dark:text-gray-300" />
-                                    <span className="text-xl font-bold text-gray-800 dark:text-white">
+                                    <IndianRupee className="h-6 w-6 text-gray-700" />
+                                    <span className="text-xl font-bold text-gray-800">
                                         Total Amount
                                     </span>
                                 </div>
-                                <span className="text-3xl font-bold text-green-600 dark:text-green-400">
+                                <span className="text-3xl font-bold text-green-600">
                                     ₹{order.total_amount.toLocaleString()}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                    <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                        <p className="text-sm text-blue-800">
                             {order.status === 'pending' && '📦 Your order is being processed and will be delivered soon.'}
                             {order.status === 'delivered' && '✅ Your order has been delivered. Thank you for your purchase!'}
                             {order.status === 'cancelled' && '❌ This order has been cancelled.'}

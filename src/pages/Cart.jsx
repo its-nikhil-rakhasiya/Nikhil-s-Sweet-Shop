@@ -35,10 +35,10 @@ export default function Cart() {
             <div className="max-w-4xl mx-auto">
                 <div className="text-center py-16">
                     <ShoppingCart className="h-24 w-24 mx-auto text-gray-400 mb-4" />
-                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
+                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
                         Your Cart is Empty
                     </h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    <p className="text-gray-600 mb-6">
                         Add some delicious sweets to get started!
                     </p>
                     <motion.button
@@ -60,44 +60,44 @@ export default function Cart() {
             <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-3">
                     <ShoppingCart className="h-8 w-8 text-blue-600" />
-                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+                    <h1 className="text-3xl font-bold text-gray-800">
                         Shopping Cart ({getCartCount()} items)
                     </h1>
                 </div>
                 <button
                     onClick={() => navigate('/')}
-                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 inline-flex items-center space-x-1"
+                    className="text-blue-600 hover:text-blue-700 inline-flex items-center space-x-1"
                 >
                     <ArrowLeft className="h-5 w-5" />
                     <span>Continue Shopping</span>
                 </button>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-6">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
                 <div className="overflow-x-auto">
                     <table className="w-full">
-                        <thead className="bg-gray-100 dark:bg-gray-700">
+                        <thead className="bg-gray-100">
                             <tr>
-                                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                                     Product
                                 </th>
-                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                                     Price
                                 </th>
-                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                                     Quantity
                                 </th>
-                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                                     Subtotal
                                 </th>
-                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
                                     Remove
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tbody className="divide-y divide-gray-200">
                             {cartItems.map((item) => (
-                                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                <tr key={item.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center space-x-4">
                                             <img
@@ -106,17 +106,17 @@ export default function Cart() {
                                                 className="w-16 h-16 object-cover rounded-lg"
                                             />
                                             <div>
-                                                <h3 className="font-semibold text-gray-800 dark:text-white">
+                                                <h3 className="font-semibold text-gray-800">
                                                     {item.sweet_name}
                                                 </h3>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                                <p className="text-sm text-gray-600">
                                                     {item.weight}g • {item.location}
                                                 </p>
                                             </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-center">
-                                        <div className="flex items-center justify-center text-gray-800 dark:text-white font-semibold">
+                                        <div className="flex items-center justify-center text-gray-800 font-semibold">
                                             <IndianRupee className="h-4 w-4" />
                                             {item.price.toLocaleString()}
                                         </div>
@@ -126,24 +126,24 @@ export default function Cart() {
                                             <motion.button
                                                 whileTap={{ scale: 0.9 }}
                                                 onClick={() => handleQuantityChange(item, item.quantity - 1)}
-                                                className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500"
+                                                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                                             >
-                                                <Minus className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+                                                <Minus className="h-4 w-4 text-gray-700" />
                                             </motion.button>
-                                            <span className="w-12 text-center font-semibold text-gray-800 dark:text-white">
+                                            <span className="w-12 text-center font-semibold text-gray-800">
                                                 {item.quantity}
                                             </span>
                                             <motion.button
                                                 whileTap={{ scale: 0.9 }}
                                                 onClick={() => handleQuantityChange(item, item.quantity + 1)}
-                                                className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500"
+                                                className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300"
                                             >
-                                                <Plus className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+                                                <Plus className="h-4 w-4 text-gray-700" />
                                             </motion.button>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-center">
-                                        <div className="flex items-center justify-center text-green-600 dark:text-green-400 font-bold text-lg">
+                                        <div className="flex items-center justify-center text-green-600 font-bold text-lg">
                                             <IndianRupee className="h-5 w-5" />
                                             {(item.price * item.quantity).toLocaleString()}
                                         </div>
@@ -153,7 +153,7 @@ export default function Cart() {
                                             whileHover={{ scale: 1.1 }}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => removeFromCart(item.id)}
-                                            className="text-red-600 hover:text-red-700 dark:text-red-400"
+                                            className="text-red-600 hover:text-red-700"
                                         >
                                             <Trash2 className="h-5 w-5" />
                                         </motion.button>
@@ -165,23 +165,23 @@ export default function Cart() {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            <div className="bg-white rounded-lg shadow-lg p-6">
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Order Summary</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">Order Summary</h2>
                 </div>
 
                 <div className="space-y-3 mb-6">
-                    <div className="flex justify-between text-gray-700 dark:text-gray-300">
+                    <div className="flex justify-between text-gray-700">
                         <span>Subtotal ({getCartCount()} items):</span>
                         <div className="flex items-center font-semibold">
                             <IndianRupee className="h-5 w-5" />
                             {getCartTotal().toLocaleString()}
                         </div>
                     </div>
-                    <div className="border-t border-gray-300 dark:border-gray-600 pt-3">
-                        <div className="flex justify-between text-xl font-bold text-gray-800 dark:text-white">
+                    <div className="border-t border-gray-300 pt-3">
+                        <div className="flex justify-between text-xl font-bold text-gray-800">
                             <span>Total:</span>
-                            <div className="flex items-center text-green-600 dark:text-green-400">
+                            <div className="flex items-center text-green-600">
                                 <IndianRupee className="h-6 w-6" />
                                 {getCartTotal().toLocaleString()}
                             </div>

@@ -15,7 +15,8 @@ export default function OrderManagement() {
     }, []);
 
     const fetchOrders = () => {
-        fetch('http://localhost:3001/api/admin/orders/detailed')
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        fetch(`${API_URL}/api/admin/orders/detailed`)
             .then(res => res.json())
             .then(data => {
                 setOrders(data);
@@ -29,7 +30,8 @@ export default function OrderManagement() {
 
     const handleStatusChange = async (orderId, newStatus) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/orders/${orderId}/status`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })
@@ -49,7 +51,8 @@ export default function OrderManagement() {
 
     const handleItemStatusChange = async (itemId, newStatus) => {
         try {
-            const response = await fetch(`http://localhost:3001/api/order-items/${itemId}/status`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/order-items/${itemId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: newStatus })
@@ -104,19 +107,19 @@ export default function OrderManagement() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                 <div className="flex items-center space-x-3 mb-4 md:mb-0">
                     <Package className="h-6 w-6 text-blue-600" />
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                    <h2 className="text-2xl font-bold text-gray-800">
                         Order Management
                     </h2>
                 </div>
 
                 <div className="flex items-center space-x-2">
-                    <label className="text-gray-700 dark:text-gray-300 font-medium">
+                    <label className="text-gray-700 font-medium">
                         Filter:
                     </label>
                     <select
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
-                        className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:bg-gray-700 dark:text-white"
+                        className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white text-gray-800"
                     >
                         <option value="">All Orders</option>
                         <option value="pending">Pending</option>
@@ -127,7 +130,7 @@ export default function OrderManagement() {
             </div>
 
             {filteredOrders.length === 0 ? (
-                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-12 text-gray-500">
                     No orders found.
                 </div>
             ) : (
@@ -137,38 +140,38 @@ export default function OrderManagement() {
                             key={order.id}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+                            className="bg-white rounded-lg shadow-md overflow-hidden"
                         >
                             <div className="p-4">
                                 <div className="grid grid-cols-1 md:grid-cols-6 gap-4 items-center">
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">Order ID</p>
-                                        <p className="font-bold text-gray-800 dark:text-white">#{order.id}</p>
+                                        <p className="text-sm text-gray-600">Order ID</p>
+                                        <p className="font-bold text-gray-800">#{order.id}</p>
                                     </div>
 
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">Customer</p>
-                                        <p className="font-semibold text-gray-800 dark:text-white">
+                                        <p className="text-sm text-gray-600">Customer</p>
+                                        <p className="font-semibold text-gray-800">
                                             {order.full_name}
                                         </p>
                                     </div>
 
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">Date</p>
-                                        <p className="text-gray-800 dark:text-white">
+                                        <p className="text-sm text-gray-600">Date</p>
+                                        <p className="text-gray-800">
                                             {formatDateToLocal(order.created_at)}
                                         </p>
                                     </div>
 
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">Total</p>
-                                        <p className="font-bold text-green-600 dark:text-green-400">
+                                        <p className="text-sm text-gray-600">Total</p>
+                                        <p className="font-bold text-green-600">
                                             ₹{order.total_amount.toLocaleString()}
                                         </p>
                                     </div>
 
                                     <div>
-                                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Status</p>
+                                        <p className="text-sm text-gray-600 mb-1">Status</p>
                                         <select
                                             value={order.status}
                                             onChange={(e) => handleStatusChange(order.id, e.target.value)}
@@ -188,7 +191,7 @@ export default function OrderManagement() {
                                     <div className="flex justify-end">
                                         <button
                                             onClick={() => toggleOrderExpansion(order.id)}
-                                            className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                                            className="flex items-center space-x-1 text-blue-600 hover:text-blue-700"
                                         >
                                             <span className="text-sm font-medium">
                                                 {expandedOrders.has(order.id) ? 'Hide' : 'Show'} Items
@@ -207,56 +210,56 @@ export default function OrderManagement() {
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
-                                        className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+                                        className="mt-4 pt-4 border-t border-gray-200"
                                     >
                                         <div className="space-y-2 mb-4">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            <p className="text-sm text-gray-600">
                                                 <span className="font-semibold">Email:</span> {order.email}
                                             </p>
-                                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                            <p className="text-sm text-gray-600">
                                                 <span className="font-semibold">Address:</span> {order.delivery_address}
                                             </p>
                                         </div>
 
                                         <table className="w-full">
                                             <thead>
-                                                <tr className="bg-gray-50 dark:bg-gray-700">
-                                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                <tr className="bg-gray-50">
+                                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
                                                         Item
                                                     </th>
-                                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
                                                         Location
                                                     </th>
-                                                    <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700">
                                                         Quantity
                                                     </th>
-                                                    <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">
                                                         Price
                                                     </th>
-                                                    <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    <th className="px-4 py-2 text-right text-sm font-semibold text-gray-700">
                                                         Subtotal
                                                     </th>
-                                                    <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                                    <th className="px-4 py-2 text-center text-sm font-semibold text-gray-700">
                                                         Delivery Status
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {order.items.map((item) => (
-                                                    <tr key={item.id} className="border-t border-gray-200 dark:border-gray-700">
-                                                        <td className="px-4 py-3 text-gray-800 dark:text-white">
+                                                    <tr key={item.id} className="border-t border-gray-200">
+                                                        <td className="px-4 py-3 text-gray-800">
                                                             {item.sweet_name}
                                                         </td>
-                                                        <td className="px-4 py-3 text-gray-600 dark:text-gray-400 text-sm">
+                                                        <td className="px-4 py-3 text-gray-600 text-sm">
                                                             {item.location || 'N/A'}
                                                         </td>
-                                                        <td className="px-4 py-3 text-center text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-center text-gray-800">
                                                             {item.quantity}
                                                         </td>
-                                                        <td className="px-4 py-3 text-right text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-right text-gray-800">
                                                             ₹{item.price_per_unit.toLocaleString()}
                                                         </td>
-                                                        <td className="px-4 py-3 text-right font-semibold text-gray-800 dark:text-white">
+                                                        <td className="px-4 py-3 text-right font-semibold text-gray-800">
                                                             ₹{item.subtotal.toLocaleString()}
                                                         </td>
                                                         <td className="px-4 py-3 text-center">

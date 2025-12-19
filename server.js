@@ -4,17 +4,21 @@ import cors from 'cors';
 import { createServer } from 'vite';
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 app.use(express.json());
 
 const dbConfig = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  database: 'nikhil-sweet-shop'
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'nikhil-sweet-shop',
+  ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : undefined
 };
 
 // Create a MySQL connection pool
@@ -740,11 +744,14 @@ app.delete('/api/admin/banned-emails/:banId', async (req, res) => {
   }
 });
 
-// Start Vite dev server
-const vite = await createServer({
-  server: { middlewareMode: true }
-});
-app.use(vite.middlewares);
+// Start Vite dev server only in development
+if (process.env.NODE_ENV !== 'production') {
+  const { createServer } = await import('vite');
+  const vite = await createServer({
+    server: { middlewareMode: true }
+  });
+  app.use(vite.middlewares);
+}
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

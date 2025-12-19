@@ -15,7 +15,8 @@ export default function UserManagement() {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch('http://localhost:3001/api/admin/users');
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/admin/users`);
             const data = await response.json();
             setUsers(data);
             setLoading(false);
@@ -29,7 +30,8 @@ export default function UserManagement() {
     const handleAddUser = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3001/api/admin/users', {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/admin/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newUser)
@@ -54,7 +56,8 @@ export default function UserManagement() {
         if (!confirm(`Are you sure you want to delete user ${email}?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/users/${userId}`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
 
@@ -77,7 +80,8 @@ export default function UserManagement() {
         if (!confirm(`Are you sure you want to ${action} ${email}?`)) return;
 
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/users/${userId}/ban`, {
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const response = await fetch(`${API_URL}/api/admin/users/${userId}/ban`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ is_banned: newStatus })
@@ -104,7 +108,7 @@ export default function UserManagement() {
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-3">
                     <Users className="h-7 w-7 text-blue-600" />
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">User Management</h2>
+                    <h2 className="text-2xl font-bold text-gray-800">User Management</h2>
                 </div>
                 <button
                     onClick={() => setShowAddModal(true)}
@@ -115,24 +119,24 @@ export default function UserManagement() {
                 </button>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <table className="w-full">
-                    <thead className="bg-gray-100 dark:bg-gray-700">
+                    <thead className="bg-gray-100">
                         <tr>
-                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">ID</th>
-                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Email</th>
-                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Full Name</th>
-                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Status</th>
-                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">Created</th>
-                            <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700 dark:text-gray-300">Actions</th>
+                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">ID</th>
+                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Email</th>
+                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Full Name</th>
+                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
+                            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Created</th>
+                            <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody className="divide-y divide-gray-200">
                         {users.map((user) => (
-                            <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                                <td className="px-6 py-4 text-gray-800 dark:text-white">{user.id}</td>
-                                <td className="px-6 py-4 text-gray-800 dark:text-white">{user.email}</td>
-                                <td className="px-6 py-4 text-gray-800 dark:text-white">{user.full_name}</td>
+                            <tr key={user.id} className="hover:bg-gray-50">
+                                <td className="px-6 py-4 text-gray-800">{user.id}</td>
+                                <td className="px-6 py-4 text-gray-800">{user.email}</td>
+                                <td className="px-6 py-4 text-gray-800">{user.full_name}</td>
                                 <td className="px-6 py-4">
                                     {user.is_banned ? (
                                         <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">
@@ -144,7 +148,7 @@ export default function UserManagement() {
                                         </span>
                                     )}
                                 </td>
-                                <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">
+                                <td className="px-6 py-4 text-gray-600 text-sm">
                                     {formatDateToLocal(user.created_at)}
                                 </td>
                                 <td className="px-6 py-4">
@@ -177,36 +181,36 @@ export default function UserManagement() {
             {/* Add User Modal */}
             {showAddModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">Add New User</h3>
+                    <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                        <h3 className="text-xl font-bold text-gray-800 mb-4">Add New User</h3>
                         <form onSubmit={handleAddUser} className="space-y-4">
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                <label className="block text-gray-700 mb-2">Email</label>
                                 <input
                                     type="email"
                                     value={newUser.email}
                                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
+                                <label className="block text-gray-700 mb-2">Password</label>
                                 <input
                                     type="password"
                                     value={newUser.password}
                                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                                <label className="block text-gray-700 mb-2">Full Name</label>
                                 <input
                                     type="text"
                                     value={newUser.full_name}
                                     onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
-                                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                                     required
                                 />
                             </div>
@@ -223,7 +227,7 @@ export default function UserManagement() {
                                         setShowAddModal(false);
                                         setNewUser({ email: '', password: '', full_name: '' });
                                     }}
-                                    className="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-white py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500"
+                                    className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300"
                                 >
                                     Cancel
                                 </button>

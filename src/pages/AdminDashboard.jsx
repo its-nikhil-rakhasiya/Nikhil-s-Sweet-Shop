@@ -82,7 +82,8 @@ export default function AdminDashboard() {
         updatedSweet.stock_quantity = 0;
       }
 
-      const response = await fetch(`http://localhost:3001/api/sweets/${updatedSweet.id}`, {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/sweets/${updatedSweet.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedSweet)
@@ -107,7 +108,8 @@ export default function AdminDashboard() {
     if (!validateSweet(newSweet)) return;
 
     try {
-      const response = await fetch('http://localhost:3001/api/addsweet', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/addsweet`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSweet),
@@ -128,7 +130,8 @@ export default function AdminDashboard() {
 
   const fetchSweets = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/sweets');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/sweets`);
       const data = await response.json();
       setSweets(data);
     } catch (error) {
@@ -154,7 +157,8 @@ export default function AdminDashboard() {
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3001/api/admin/login', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -191,8 +195,9 @@ export default function AdminDashboard() {
     if (!validateSweet(editingSweet)) return;
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
       const response = await fetch(
-        `http://localhost:3001/api/sweets/${editingSweet.id}`,
+        `${API_URL}/api/sweets/${editingSweet.id}`,
         {
           method: 'PUT',
           headers: {
@@ -236,7 +241,8 @@ export default function AdminDashboard() {
     const confirmDelete = window.confirm('Are you sure you want to delete this sweet?');
     if (confirmDelete) {
       try {
-        const response = await fetch(`http://localhost:3001/api/sweets/${sweetId}`, {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${API_URL}/api/sweets/${sweetId}`, {
           method: 'DELETE',
         });
 
@@ -255,7 +261,8 @@ export default function AdminDashboard() {
 
   const handleStockUpdate = async (sweetId, newStock) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/sweets/${sweetId}/stock`, {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${API_URL}/api/sweets/${sweetId}/stock`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ stock_quantity: parseInt(newStock) })
@@ -294,11 +301,11 @@ export default function AdminDashboard() {
 
   const SweetTable = ({ sweets, title }) => (
     <div className="mb-8">
-      <h2 className="text-xl font-bold mb-4 dark:text-white">{title}</h2>
+      <h2 className="text-xl font-bold mb-4">{title}</h2>
       <div className="w-full">
-        <table className="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg w-full">
+        <table className="min-w-full bg-white shadow-md rounded-lg w-full">
           <thead>
-            <tr className="bg-gray-200 dark:bg-gray-700 dark:text-white">
+            <tr className="bg-gray-200">
               <th className="px-6 py-3 text-left">Sweet Name</th>
               <th className="px-6 py-3 text-left">Category</th>
               <th className="px-6 py-3 text-left">Weight</th>
@@ -312,7 +319,7 @@ export default function AdminDashboard() {
           </thead>
           <tbody>
             {sweets.map((sweet) => (
-              <tr key={sweet.id} className="border-b dark:border-gray-700 dark:text-white">
+              <tr key={sweet.id} className="border-b">
                 <td className="px-6 py-4">{sweet.sweet_name}</td>
                 <td className="px-6 py-4">{sweet.category}</td>
                 <td className="px-6 py-4">{sweet.weight}g</td>
@@ -338,13 +345,13 @@ export default function AdminDashboard() {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleEdit(sweet)}
-                      className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
+                      className="text-blue-600 hover:text-blue-800"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(sweet.id)}
-                      className="ml-2 text-red-600 hover:text-red-800 dark:text-red-400"
+                      className="ml-2 text-red-600 hover:text-red-800"
                     >
                       Delete
                     </button>
@@ -357,7 +364,7 @@ export default function AdminDashboard() {
                           alert('Please enter a valid non-negative number');
                         }
                       }}
-                      className="ml-2 text-green-600 hover:text-green-800 dark:text-green-400"
+                      className="ml-2 text-green-600 hover:text-green-800"
                     >
                       Restock
                     </button>
@@ -382,33 +389,33 @@ export default function AdminDashboard() {
   // Show login form if not authenticated
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md"
+          className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md"
         >
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800 dark:text-white">
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
             Admin Login
           </h2>
           <form onSubmit={handleAdminLogin} className="space-y-4">
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-2">Email</label>
+              <label className="block text-gray-700 mb-2">Email</label>
               <input
                 type="email"
                 value={loginForm.email}
                 onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 required
               />
             </div>
             <div>
-              <label className="block text-gray-700 dark:text-gray-300 mb-2">Password</label>
+              <label className="block text-gray-700 mb-2">Password</label>
               <input
                 type="password"
                 value={loginForm.password}
                 onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
                 required
               />
             </div>
@@ -427,7 +434,7 @@ export default function AdminDashboard() {
   return (
     <div className="w-full px-2 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-gray-900">
           Admin Dashboard
         </h1>
         <button
@@ -438,13 +445,13 @@ export default function AdminDashboard() {
         </button>
       </div>
 
-      <div className="mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="mb-6 border-b border-gray-200">
         <nav className="flex space-x-8">
           <button
             onClick={() => setActiveTab('sweets')}
             className={`px-6 py-3 font-semibold transition-all ${activeTab === 'sweets'
               ? 'border-b-2 border-blue-600 text-blue-600'
-              : 'text-gray-600 dark:text-gray-400 hover:text-blue-500'
+              : 'text-gray-600 hover:text-blue-500'
               }`}
           >
             Sweets Management
@@ -453,7 +460,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('orders')}
             className={`px-6 py-3 font-semibold transition-all ${activeTab === 'orders'
               ? 'border-b-2 border-blue-600 text-blue-600'
-              : 'text-gray-600 dark:text-gray-400 hover:text-blue-500'
+              : 'text-gray-600 hover:text-blue-500'
               }`}
           >
             Orders Management
@@ -462,7 +469,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('users')}
             className={`px-6 py-3 font-semibold transition-all ${activeTab === 'users'
               ? 'border-b-2 border-blue-600 text-blue-600'
-              : 'text-gray-600 dark:text-gray-400 hover:text-blue-500'
+              : 'text-gray-600 hover:text-blue-500'
               }`}
           >
             Users
@@ -471,7 +478,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('banned')}
             className={`px-6 py-3 font-semibold transition-all ${activeTab === 'banned'
               ? 'border-b-2 border-blue-600 text-blue-600'
-              : 'text-gray-600 dark:text-gray-400 hover:text-blue-500'
+              : 'text-gray-600 hover:text-blue-500'
               }`}
           >
             Banned Emails
@@ -483,23 +490,23 @@ export default function AdminDashboard() {
       {activeTab === 'sweets' && (
         <div>
           <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-              <h2 className="flex items-center gap-2 text-xl font-bold mb-4 dark:bg-gray-800 dark:text-green-400">
+            <div className="p-4 bg-white rounded-lg shadow">
+              <h2 className="flex items-center gap-2 text-xl font-bold mb-4">
                 <Layers className="h-6 w-6 text-green-500" />
                 Total Sweets
               </h2>
 
-              <p className="text-2xl font-bold dark:text-white">{totalSweets}</p>
+              <p className="text-2xl font-bold">{totalSweets}</p>
             </div>
-            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-              <h2 className="flex items-center gap-2 text-xl font-bold mb-4 dark:bg-gray-800 dark:text-green-400">
+            <div className="p-4 bg-white rounded-lg shadow">
+              <h2 className="flex items-center gap-2 text-xl font-bold mb-4">
                 <Sparkles className="h-6 w-6 text-green-500" />
                 Available Sweets
               </h2>
               <p className="text-2xl font-bold text-green-600">{availableSweets}</p>
             </div>
-            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-              <h2 className="flex items-center gap-2 text-xl font-bold mb-4 dark:bg-gray-800 dark:text-red-400">
+            <div className="p-4 bg-white rounded-lg shadow">
+              <h2 className="flex items-center gap-2 text-xl font-bold mb-4">
                 <ArchiveX className="h-6 w-6 text-red-500" />
                 Unavailable Sweets
               </h2>
@@ -508,9 +515,9 @@ export default function AdminDashboard() {
           </div>
 
           {/* Filter Section */}
-          <div className="mb-6 bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+          <div className="mb-6 bg-white p-4 rounded-lg shadow">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold dark:text-white">Filters</h2>
+              <h2 className="text-xl font-bold">Filters</h2>
               <button
                 onClick={handleAddSweetToggle}
                 className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
@@ -521,9 +528,9 @@ export default function AdminDashboard() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium dark:text-white">Category</label>
+                <label className="block text-sm font-medium">Category</label>
                 <select
-                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  className="w-full p-2 border rounded"
                   value={filters.category}
                   onChange={e => setFilters({ ...filters, category: e.target.value })}
                 >
@@ -540,11 +547,11 @@ export default function AdminDashboard() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium dark:text-white">Status</label>
+                <label className="block text-sm font-medium">Status</label>
                 <select
                   value={filters.status}
                   onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  className="w-full p-2 border rounded"
                 >
                   <option value="">All</option>
                   <option value="available">Available</option>
@@ -552,9 +559,9 @@ export default function AdminDashboard() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium dark:text-white">City</label>
+                <label className="block text-sm font-medium">City</label>
                 <select
-                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  className="w-full p-2 border rounded"
                   value={filters.city}
                   onChange={e => setFilters({ ...filters, city: e.target.value })}
                 >
@@ -594,7 +601,7 @@ export default function AdminDashboard() {
                 {/* Add Sweet Form Modal */}
                 {showAddSweetForm && (
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full">
                       <h2 className="text-xl font-bold mb-4">Add New Sweet</h2>
                       <div className="space-y-4">
                         <input
@@ -699,7 +706,7 @@ export default function AdminDashboard() {
                 {/* Edit Sweet Modal */}
                 {editingSweet && (
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full">
                       <h2 className="text-xl font-bold mb-4">Edit Sweet</h2>
                       <div className="space-y-4">
                         <input
@@ -777,7 +784,7 @@ export default function AdminDashboard() {
                             })}
                             className="h-4 w-4"
                           />
-                          <label className="dark:text-white">Mark as Sold</label>
+                          <label>Mark as Sold</label>
                         </div>
                         <input
                           type="text"
@@ -797,7 +804,7 @@ export default function AdminDashboard() {
                             onClick={handleSave}
                             className="px-4 py-2 bg-blue-600 text-white rounded"
                           >
-                            Save
+                            Save Changes
                           </button>
                         </div>
                       </div>

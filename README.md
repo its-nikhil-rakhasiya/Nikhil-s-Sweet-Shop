@@ -1,7 +1,7 @@
 # ✦ Nikhil's Sweet Shop  
 **Sweet Shop Management System – Incubyte Technical Assignment**
 
-🌐 **Live Application:** https://nikhil-s-sweet-shop.vercel.app
+🌐 **Live Application:** [https://nikhil-s-sweet-shop.vercel.app](https://nikhil-s-sweet-shop.vercel.app)
 
 ---
 
@@ -9,29 +9,33 @@
 
 > **Incubyte Technical Assignment Submission**
 
-I developed this project as part of the **Incubyte Sweet Shop Management System** technical assignment.
+I developed this project as part of the **Incubyte Sweet Shop Management System** technical assignment. My goal was to build a **clean, full-stack application** that manages sweets, inventory, and purchases while following real-world business rules and clean coding practices.
+    
+---
 
-My goal was to build a **clean, full-stack application** that manages sweets, inventory, and purchases while following real-world business rules and clean coding practices.
+## � Modern Architecture & Hosting
+
+To demonstrate production-grade deployment skills, the project is hosted across three specialized cloud platforms:
+
+1.  ☁️ **Database**: [Aiven Cloud MySQL](https://aiven.io/) (High-performance managed database)
+2.  ⚙️ **Backend**: [Render](https://render.com/) (Express API with automated CI/CD)
+3.  🎨 **Frontend**: [Vercel](https://vercel.com/) (Global Edge Network for fast React performance)
 
 ---
 
-✦ Application UI Overview
+## ✦ Application UI Overview
 
-Below are real screenshots from the deployed application, demonstrating the complete user journey and system capabilities.
+Below are real screenshots from the application, demonstrating the complete user journey and system capabilities.
 
 ---
 
 ## 🏠 Home Page – Available Sweets
 
 Features shown:
-
-Sweet listing with cards
-
-Search, city, category, and price filters
-
-Stock availability
-
-Order Now action
+- Sweet listing with cards
+- Search, city, category, and price filters
+- Stock availability
+- Order Now action
 
 ![Home Page – Available Sweets](./Readme-img/0.png)
 
@@ -40,14 +44,10 @@ Order Now action
 ## 🛒 Shopping Cart
 
 Features shown:
-
-Cart item list
-
-Quantity control (+ / −)
-
-Subtotal & total calculation
-
-Remove item option
+- Cart item list
+- Quantity control (+ / −)
+- Subtotal & total calculation
+- Remove item option
 
 ![Shopping Cart](./Readme-img/1.png)
 
@@ -56,14 +56,10 @@ Remove item option
 ## 💳 Checkout Page
 
 Features shown:
-
-Delivery information form
-
-Order summary
-
-Total amount calculation
-
-Place Order action
+- Delivery information form
+- Order summary
+- Total amount calculation
+- Place Order action
 
 ![Checkout Page](./Readme-img/2.png)
 
@@ -72,14 +68,10 @@ Place Order action
 ## 📦 My Orders Page
 
 Features shown:
-
-Order history
-
-Order status (Pending / Delivered)
-
-Total amount
-
-View receipt option
+- Order history
+- Order status (Pending / Delivered)
+- Total amount
+- View receipt option
 
 ![My Orders](./Readme-img/3.png)
 
@@ -88,36 +80,14 @@ View receipt option
 ## 🧾 Order Receipt Details
 
 Features shown:
-
-Order ID
-
-Customer details
-
-Delivery address
-
-Order status
-
-Ordered items
-
-Total amount
+- Order ID
+- Customer details
+- Delivery address
+- Order status
+- Ordered items
+- Total amount
 
 ![Order Receipt](./Readme-img/4.png)
-
----
-
-✦ What This UI Demonstrates (Incubyte Focus)
-
-Complete end-to-end purchase flow
-
-Backend-driven inventory & order management
-
-Clear business rules enforcement
-
----
-
-Real-world e-commerce workflow
-
-Production-ready UI
 
 ---
 
@@ -138,7 +108,7 @@ Production-ready UI
 
 ---
 
-### 📊 Admin Dashboard – Sweets Management
+### � Admin Dashboard – Sweets Management
 
 **Features shown:**
 - Total sweets count
@@ -201,15 +171,12 @@ Production-ready UI
 
 ---
 
-## ✦ Admin Capabilities Summary
+## ✦ Technical Highlights (Incubyte Focus)
 
-- Secure admin authentication
-- Complete CRUD operations on sweets
-- Inventory management (restock & sold status)
-- Order tracking and status updates
-- Real-time data reflected in user interface
-
-This admin panel ensures **correct inventory handling and business rule enforcement**, as required in the Incubyte assignment.
+- **Clean Code Architecture**: Separation of concerns between API, Database, and UI logic.
+- **Business Rule Enforcement**: Strict inventory validation (cannot order more than available stock).
+- **Security**: Robust authentication for users and admins.
+- **Production Readiness**: Environment-variable based configuration for seamless deployment transitions.
 
 ---
 
@@ -243,15 +210,6 @@ This admin panel ensures **correct inventory handling and business rule enforcem
 
 ---
 
-## ✦ Authentication Capabilities Summary
+## ✦ Final Summary
 
-- Secure user login and registration
-- Session-based user experience
-- Only logged-in users can:
-  - Place orders
-  - View order history
-  - Access checkout
-- Authentication integrates with backend APIs and database
-
-This authentication flow ensures a **real-world e-commerce experience** and supports secure order management, aligning with the Incubyte assignment requirements.
-
+This project demonstrates a **complete end-to-end purchase flow** and a **production-ready Admin system**. It follows the core requirements of the Incubyte assignment while pushing the boundaries with a modern, cloud-hosted architecture and a polished, business-ready interface.

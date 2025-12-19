@@ -13,7 +13,8 @@ export default function OrderHistory() {
 
     useEffect(() => {
         if (user) {
-            fetch(`http://localhost:3001/api/orders/user/${user.id}`)
+            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            fetch(`${API_URL}/api/orders/user/${user.id}`)
                 .then(res => res.json())
                 .then(data => {
                     setOrders(data);
@@ -67,10 +68,10 @@ export default function OrderHistory() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
                 <ShoppingBag className="h-24 w-24 text-gray-400 mb-4" />
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
                     No Orders Yet
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-gray-600 mb-6">
                     You haven't placed any orders. Start shopping now!
                 </p>
                 <button
@@ -86,8 +87,8 @@ export default function OrderHistory() {
     return (
         <div className="max-w-6xl mx-auto">
             <div className="flex items-center space-x-3 mb-8">
-                <ShoppingBag className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+                <ShoppingBag className="h-8 w-8 text-blue-600" />
+                <h1 className="text-3xl font-bold text-gray-800">
                     My Orders
                 </h1>
             </div>
@@ -98,14 +99,14 @@ export default function OrderHistory() {
                         key={order.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+                        className="bg-white rounded-lg shadow-lg p-6"
                     >
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                             <div>
-                                <h3 className="text-lg font-bold text-gray-800 dark:text-white">
+                                <h3 className="text-lg font-bold text-gray-800">
                                     Order #{order.id}
                                 </h3>
-                                <div className="flex items-center text-gray-600 dark:text-gray-400">
+                                <div className="flex items-center text-gray-600">
                                     <Calendar className="h-4 w-4 mr-2" />
                                     {formatDateToLocal(order.created_at)}
                                 </div>
@@ -115,21 +116,21 @@ export default function OrderHistory() {
                             </div>
                         </div>
 
-                        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                        <div className="border-t border-gray-200 pt-4 mt-4">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                                 <div>
-                                    <p className="text-gray-700 dark:text-gray-300">
+                                    <p className="text-gray-700">
                                         <span className="font-semibold">Delivery Address:</span>
                                     </p>
-                                    <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                                    <p className="text-gray-600 text-sm mt-1">
                                         {order.delivery_address}
                                     </p>
                                 </div>
                                 <div className="mt-4 md:mt-0 text-right">
-                                    <p className="text-gray-700 dark:text-gray-300 font-semibold">
+                                    <p className="text-gray-700 font-semibold">
                                         Total Amount
                                     </p>
-                                    <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                                    <p className="text-2xl font-bold text-green-600">
                                         ₹{order.total_amount.toLocaleString()}
                                     </p>
                                 </div>
