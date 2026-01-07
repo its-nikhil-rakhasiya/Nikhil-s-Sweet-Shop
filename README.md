@@ -1,5 +1,5 @@
 # ✦ Nikhil's Sweet Shop  
-**Sweet Shop Management System – Incubyte Technical Assignment**
+**Sweet Shop Management System**
 
 🌐 **Live Application:** [https://nikhil-s-sweet-shop.vercel.app](https://nikhil-s-sweet-shop.vercel.app)
 
