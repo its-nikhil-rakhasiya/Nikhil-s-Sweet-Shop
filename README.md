@@ -7,9 +7,7 @@
 
 ## ✦ Project Overview
 
-> **Incubyte Technical Assignment Submission**
-
-I developed this project as part of the **Incubyte Sweet Shop Management System** technical assignment. My goal was to build a **clean, full-stack application** that manages sweets, inventory, and purchases while following real-world business rules and clean coding practices.
+My goal was to build a **clean, full-stack application** that manages sweets, inventory, and purchases while following real-world business rules and clean coding practices.
     
 ---
 
