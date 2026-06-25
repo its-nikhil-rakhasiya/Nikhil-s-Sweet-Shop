@@ -2,6 +2,7 @@ import express from 'express';
 import mysql from 'mysql2/promise';
 import cors from 'cors';
 import { createServer } from 'vite';
+import 'dotenv/config';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -14,11 +15,11 @@ app.use(express.json());
 
 const dbConfig = {
   host: process.env.DB_HOST || 'mysql-nikhil-nikhil-sweet-shop.k.aivencloud.com',
-  port: process.env.DB_PORT || 2627,
+  port: process.env.DB_PORT || 22627,
   user: process.env.DB_USER || 'avnadmin',
   password: process.env.DB_PASSWORD || 'AVNS_J2V2Yx8z7jm36V0-gOb',
   database: process.env.DB_NAME || 'defaultdb',
-  ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : undefined
+  ssl: { rejectUnauthorized: false }
 };
 
 // Create a MySQL connection pool
@@ -310,7 +311,10 @@ app.post('/api/orders', async (req, res) => {
     }
 
     // Calculate total if not provided
-    const calculatedTotal = total_amount || items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const calculatedTotal = total_amount || items.reduce((sum, item) => {
+      const price = item.price || item.price_per_unit;
+      return sum + (price * item.quantity);
+    }, 0);
 
     // Create order
     const [orderResult] = await connection.execute(
@@ -322,9 +326,10 @@ app.post('/api/orders', async (req, res) => {
 
     // Insert order items and update stock
     for (const item of items) {
+      const price = item.price || item.price_per_unit;
       await connection.execute(
         'INSERT INTO order_items (order_id, sweet_id, quantity, price_per_unit, subtotal, status) VALUES (?, ?, ?, ?, ?, ?)',
-        [orderId, item.sweet_id, item.quantity, item.price, item.price * item.quantity, 'pending']
+        [orderId, item.sweet_id, item.quantity, price, price * item.quantity, 'pending']
       );
 
       // Decrease stock

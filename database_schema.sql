@@ -63,7 +63,7 @@ CREATE TABLE `sweets` (
   `sold` tinyint(1) DEFAULT 0,
   `image` text DEFAULT NULL,
   `stock_quantity` int(11) DEFAULT 100,
-  `created_at?` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `idx_category` (`category`),
@@ -71,7 +71,7 @@ CREATE TABLE `sweets` (
   KEY `idx_sold` (`sold`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `sweets` (`id`, `sweet_name`, `category`, `weight`, `flavor`, `location`, `shop_address`, `price`, `type`, `sold`, `image`, `stock_quantity`, `created_at?`, `updated_at`) VALUES
+INSERT INTO `sweets` (`id`, `sweet_name`, `category`, `weight`, `flavor`, `location`, `shop_address`, `price`, `type`, `sold`, `image`, `stock_quantity`, `created_at`, `updated_at`) VALUES
 (1, 'Kaju Katli', 'Traditional', 500, 'Cashew', 'Mumbai', 'Laxmi Sweets, Dadar West', 450.00, 'Packaged', 0, 'https://images.unsplash.com/photo-1699708263762-00ca477760bd', 50, '2025-12-14 05:27:48', '2025-12-14 05:27:48'),
 (2, 'Rasgulla', 'Traditional', 1000, 'Sweet', 'Kolkata', 'KC Das Sweets, Park Street', 350.00, 'Packaged', 1, 'https://images.unsplash.com/photo-1714799263412-2e0c1f875959', 0, '2025-12-14 05:27:48', '2025-12-14 11:21:23'),
 (3, 'Gulab Jamun', 'Traditional', 500, 'Rose', 'Delhi', 'Haldiram, Connaught Place', 280.00, 'Packaged', 0, 'https://images.unsplash.com/photo-1666190092159-3171cf0fbb12', 100, '2025-12-14 05:27:48', '2025-12-14 05:27:48'),
@@ -108,6 +108,7 @@ CREATE TABLE `order_items` (
   `quantity` int(11) NOT NULL,
   `price_per_unit` decimal(10,2) NOT NULL,
   `subtotal` decimal(10,2) NOT NULL,
+  `status` enum('pending','shipped','delivered','cancelled') DEFAULT 'pending',
   PRIMARY KEY (`id`),
   KEY `order_id` (`order_id`),
   KEY `sweet_id` (`sweet_id`),
