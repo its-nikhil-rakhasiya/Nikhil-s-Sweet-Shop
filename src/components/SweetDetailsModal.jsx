@@ -70,9 +70,7 @@ export default function SweetDetailsModal({ sweet, onClose }) {
                     navigate('/orders');
                 }, 2000);
             } else {
-                const errorData = await response.json().catch(() => ({}));
-                const errMsg = errorData.error || errorData.details || errorData.message || 'Please try again';
-                alert(`Failed to place order: ${errMsg}`);
+                alert('Failed to place order. Please try again.');
             }
         } catch (error) {
             console.error('Error placing order:', error);

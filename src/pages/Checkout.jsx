@@ -59,8 +59,7 @@ export default function Checkout() {
                 }, 1500); // Changed from 2000 to 1500 as per instruction
             } else {
                 const errorData = await response.json();
-                const errMsg = errorData.error || errorData.details || errorData.message || 'Please try again';
-                toast.error(`Failed to place order: ${errMsg}`); // Replaced alert with toast
+                toast.error(`Failed to place order: ${errorData.message || 'Please try again'}`); // Replaced alert with toast
             }
         } catch (error) {
             console.error('Error placing order:', error);

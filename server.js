@@ -310,10 +310,7 @@ app.post('/api/orders', async (req, res) => {
     }
 
     // Calculate total if not provided
-    const calculatedTotal = total_amount || items.reduce((sum, item) => {
-      const price = item.price || item.price_per_unit;
-      return sum + (price * item.quantity);
-    }, 0);
+    const calculatedTotal = total_amount || items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     // Create order
     const [orderResult] = await connection.execute(
@@ -325,10 +322,9 @@ app.post('/api/orders', async (req, res) => {
 
     // Insert order items and update stock
     for (const item of items) {
-      const price = item.price || item.price_per_unit;
       await connection.execute(
         'INSERT INTO order_items (order_id, sweet_id, quantity, price_per_unit, subtotal, status) VALUES (?, ?, ?, ?, ?, ?)',
-        [orderId, item.sweet_id, item.quantity, price, price * item.quantity, 'pending']
+        [orderId, item.sweet_id, item.quantity, item.price, item.price * item.quantity, 'pending']
       );
 
       // Decrease stock
