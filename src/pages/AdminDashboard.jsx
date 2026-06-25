@@ -300,60 +300,72 @@ export default function AdminDashboard() {
   const cities = [...new Set(sweets.map(sweet => sweet.location))];
 
   const SweetTable = ({ sweets, title }) => (
-    <div className="mb-8">
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
-      <div className="w-full">
-        <table className="min-w-full bg-white shadow-md rounded-lg w-full">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="px-6 py-3 text-left">Sweet Name</th>
-              <th className="px-6 py-3 text-left">Category</th>
-              <th className="px-6 py-3 text-left">Weight</th>
-              <th className="px-6 py-3 text-left">Location</th>
-              <th className="px-6 py-3 text-left">Price</th>
-              <th className="px-6 py-3 text-left">Stock</th>
-              <th className="px-6 py-3 text-left">Type</th>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">Actions</th>
+    <div className="mb-8 w-full">
+      <h2 className="text-xl font-bold mb-4 text-gray-800">{title}</h2>
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full">
+        <table className="w-full table-auto">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Sweet Name</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Category</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Weight</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Location</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Price</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Stock</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Type</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
+              <th className="px-6 py-3 text-center text-sm font-semibold text-gray-700">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-200">
             {sweets.map((sweet) => (
-              <tr key={sweet.id} className="border-b">
-                <td className="px-6 py-4">{sweet.sweet_name}</td>
-                <td className="px-6 py-4">{sweet.category}</td>
-                <td className="px-6 py-4">{sweet.weight}g</td>
-                <td className="px-6 py-4">{sweet.location}</td>
-                <td className="px-6 py-4 flex items-center">
-                  <span className="mr-1">₹</span>{sweet.price.toLocaleString()}
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 rounded text-sm font-semibold ${(sweet.stock_quantity || 0) === 0
-                      ? 'bg-red-100 text-red-800'
-                      : (sweet.stock_quantity || 0) <= 10
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-green-100 text-green-800'
-                      }`}>
-                      {sweet.stock_quantity !== undefined ? sweet.stock_quantity : 'N/A'}
-                    </span>
+              <tr key={sweet.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4 text-gray-800">{sweet.sweet_name}</td>
+                <td className="px-6 py-4 text-gray-800">{sweet.category}</td>
+                <td className="px-6 py-4 text-gray-800">{sweet.weight}g</td>
+                <td className="px-6 py-4 text-gray-800">{sweet.location}</td>
+                <td className="px-6 py-4 text-gray-800">
+                  <div className="flex items-center">
+                    <span className="mr-1">₹</span>{sweet.price.toLocaleString()}
                   </div>
                 </td>
-                <td className="px-6 py-4">{sweet.type}</td>
-                <td className="px-6 py-4">{sweet.sold ? 'Sold' : 'Available'}</td>
                 <td className="px-6 py-4">
-                  <div className="flex items-center space-x-2">
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${(sweet.stock_quantity || 0) === 0
+                    ? 'bg-red-100 text-red-800'
+                    : (sweet.stock_quantity || 0) <= 10
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-green-100 text-green-800'
+                    }`}>
+                    {sweet.stock_quantity !== undefined ? sweet.stock_quantity : 'N/A'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-gray-800">{sweet.type}</td>
+                <td className="px-6 py-4">
+                  {sweet.sold ? (
+                    <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">
+                      Sold
+                    </span>
+                  ) : (
+                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
+                      Available
+                    </span>
+                  )}
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-center space-x-2">
                     <button
                       onClick={() => handleEdit(sweet)}
-                      className="text-blue-600 hover:text-blue-800"
+                      className="p-2 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-all"
+                      title="Edit Sweet"
                     >
-                      Edit
+                      <Edit className="h-5 w-5" />
                     </button>
                     <button
                       onClick={() => handleDelete(sweet.id)}
-                      className="ml-2 text-red-600 hover:text-red-800"
+                      className="p-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-all"
+                      title="Delete Sweet"
                     >
-                      Delete
+                      <Trash2 className="h-5 w-5" />
                     </button>
                     <button
                       onClick={() => {
@@ -364,9 +376,10 @@ export default function AdminDashboard() {
                           alert('Please enter a valid non-negative number');
                         }
                       }}
-                      className="ml-2 text-green-600 hover:text-green-800"
+                      className="p-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-all"
+                      title="Restock Sweet"
                     >
-                      Restock
+                      <Plus className="h-5 w-5" />
                     </button>
                   </div>
                 </td>
@@ -577,243 +590,243 @@ export default function AdminDashboard() {
                   )}
                 </select>
               </div>
+            </div>
 
-              <div className="mt-4">
-                <button
-                  onClick={resetFilters}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-                >
-                  Reset Filters
-                </button>
-
-                {/* Available Sweets Section */}
-                <SweetTable
-                  sweets={filteredSweets.filter(sweet => !sweet.sold)}
-                  title="Available Sweets"
-                />
-
-                {/* Sold Sweets Section */}
-                <SweetTable
-                  sweets={filteredSweets.filter(sweet => sweet.sold)}
-                  title="Sold Sweets"
-                />
-
-                {/* Add Sweet Form Modal */}
-                {showAddSweetForm && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full">
-                      <h2 className="text-xl font-bold mb-4">Add New Sweet</h2>
-                      <div className="space-y-4">
-                        <input
-                          type="text"
-                          value={newSweet.sweet_name}
-                          onChange={(e) => setNewSweet({ ...newSweet, sweet_name: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Sweet Name"
-                        />
-                        <input
-                          type="text"
-                          value={newSweet.category}
-                          onChange={(e) => setNewSweet({ ...newSweet, category: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Category (e.g., Chocolate, Traditional)"
-                        />
-                        <input
-                          type="number"
-                          value={newSweet.weight}
-                          onChange={(e) => setNewSweet({ ...newSweet, weight: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Weight (in grams)"
-                        />
-                        <input
-                          type="text"
-                          value={newSweet.flavor}
-                          onChange={(e) => setNewSweet({ ...newSweet, flavor: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Flavor (optional)"
-                        />
-                        <input
-                          type="text"
-                          value={newSweet.location}
-                          onChange={(e) => setNewSweet({ ...newSweet, location: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Location (City)"
-                        />
-                        <input
-                          type="text"
-                          value={newSweet.shop_address}
-                          onChange={(e) => setNewSweet({ ...newSweet, shop_address: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Shop Address"
-                        />
-                        <input
-                          type="number"
-                          value={newSweet.price}
-                          onChange={(e) => setNewSweet({ ...newSweet, price: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Price (₹)"
-                        />
-                        <input
-                          type="text"
-                          value={newSweet.type}
-                          onChange={(e) => setNewSweet({ ...newSweet, type: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Type (Packaged/Bulk)"
-                        />
-                        <input
-                          type="number"
-                          value={newSweet.stock_quantity}
-                          onChange={(e) => setNewSweet({ ...newSweet, stock_quantity: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Stock Quantity"
-                          min="0"
-                        />
-                        <div className="flex items-center">
-                          <input
-                            type="checkbox"
-                            checked={newSweet.sold}
-                            onChange={(e) => setNewSweet({ ...newSweet, sold: e.target.checked })}
-                            className="mr-2"
-                          />
-                          <label>Sold</label>
-                        </div>
-                        <input
-                          type="text"
-                          value={newSweet.image}
-                          onChange={(e) => setNewSweet({ ...newSweet, image: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Image URL"
-                        />
-                        <div className="flex justify-end space-x-2">
-                          <button
-                            onClick={handleAddSweetToggle}
-                            className="px-4 py-2 bg-gray-200 rounded"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={handleAddSweetSubmit}
-                            className="px-4 py-2 bg-green-600 text-white rounded"
-                          >
-                            Add Sweet
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Edit Sweet Modal */}
-                {editingSweet && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full">
-                      <h2 className="text-xl font-bold mb-4">Edit Sweet</h2>
-                      <div className="space-y-4">
-                        <input
-                          type="text"
-                          value={editingSweet.sweet_name}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, sweet_name: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Sweet Name"
-                        />
-                        <input
-                          type="text"
-                          value={editingSweet.category}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, category: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Category"
-                        />
-                        <input
-                          type="number"
-                          value={editingSweet.weight}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, weight: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Weight (in grams)"
-                        />
-                        <input
-                          type="text"
-                          value={editingSweet.flavor || ''}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, flavor: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Flavor (optional)"
-                        />
-                        <input
-                          type="text"
-                          value={editingSweet.location}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, location: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Location"
-                        />
-                        <input
-                          type="text"
-                          value={editingSweet.shop_address}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, shop_address: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Shop Address"
-                        />
-                        <input
-                          type="number"
-                          value={editingSweet.price}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, price: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Price"
-                        />
-                        <input
-                          type="text"
-                          value={editingSweet.type}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, type: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Type"
-                        />
-                        <input
-                          type="number"
-                          value={editingSweet.stock_quantity || 0}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, stock_quantity: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Stock Quantity"
-                          min="0"
-                        />
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            checked={editingSweet.sold}
-                            onChange={(e) => setEditingSweet({
-                              ...editingSweet,
-                              sold: e.target.checked,
-                              stock_quantity: e.target.checked ? 0 : editingSweet.stock_quantity
-                            })}
-                            className="h-4 w-4"
-                          />
-                          <label>Mark as Sold</label>
-                        </div>
-                        <input
-                          type="text"
-                          value={editingSweet.image}
-                          onChange={(e) => setEditingSweet({ ...editingSweet, image: e.target.value })}
-                          className="w-full p-2 border rounded"
-                          placeholder="Image URL"
-                        />
-                        <div className="flex justify-end space-x-2">
-                          <button
-                            onClick={() => setEditingSweet(null)}
-                            className="px-4 py-2 bg-gray-200 rounded"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={handleSave}
-                            className="px-4 py-2 bg-blue-600 text-white rounded"
-                          >
-                            Save Changes
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+            <div className="mt-4">
+              <button
+                onClick={resetFilters}
+                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
+
+          {/* Available Sweets Section */}
+          <SweetTable
+            sweets={filteredSweets.filter(sweet => !sweet.sold)}
+            title="Available Sweets"
+          />
+
+          {/* Sold Sweets Section */}
+          <SweetTable
+            sweets={filteredSweets.filter(sweet => sweet.sold)}
+            title="Sold Sweets"
+          />
+
+          {/* Add Sweet Form Modal */}
+          {showAddSweetForm && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                <h2 className="text-xl font-bold mb-4">Add New Sweet</h2>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    value={newSweet.sweet_name}
+                    onChange={(e) => setNewSweet({ ...newSweet, sweet_name: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Sweet Name"
+                  />
+                  <input
+                    type="text"
+                    value={newSweet.category}
+                    onChange={(e) => setNewSweet({ ...newSweet, category: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Category (e.g., Chocolate, Traditional)"
+                  />
+                  <input
+                    type="number"
+                    value={newSweet.weight}
+                    onChange={(e) => setNewSweet({ ...newSweet, weight: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Weight (in grams)"
+                  />
+                  <input
+                    type="text"
+                    value={newSweet.flavor}
+                    onChange={(e) => setNewSweet({ ...newSweet, flavor: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Flavor (optional)"
+                  />
+                  <input
+                    type="text"
+                    value={newSweet.location}
+                    onChange={(e) => setNewSweet({ ...newSweet, location: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Location (City)"
+                  />
+                  <input
+                    type="text"
+                    value={newSweet.shop_address}
+                    onChange={(e) => setNewSweet({ ...newSweet, shop_address: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Shop Address"
+                  />
+                  <input
+                    type="number"
+                    value={newSweet.price}
+                    onChange={(e) => setNewSweet({ ...newSweet, price: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Price (₹)"
+                  />
+                  <input
+                    type="text"
+                    value={newSweet.type}
+                    onChange={(e) => setNewSweet({ ...newSweet, type: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Type (Packaged/Bulk)"
+                  />
+                  <input
+                    type="number"
+                    value={newSweet.stock_quantity}
+                    onChange={(e) => setNewSweet({ ...newSweet, stock_quantity: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Stock Quantity"
+                    min="0"
+                  />
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={newSweet.sold}
+                      onChange={(e) => setNewSweet({ ...newSweet, sold: e.target.checked })}
+                      className="mr-2"
+                    />
+                    <label>Sold</label>
+                  </div>
+                  <input
+                    type="text"
+                    value={newSweet.image}
+                    onChange={(e) => setNewSweet({ ...newSweet, image: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Image URL"
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={handleAddSweetToggle}
+                      className="px-4 py-2 bg-gray-200 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleAddSweetSubmit}
+                      className="px-4 py-2 bg-green-600 text-white rounded"
+                    >
+                      Add Sweet
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Edit Sweet Modal */}
+          {editingSweet && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                <h2 className="text-xl font-bold mb-4">Edit Sweet</h2>
+                <div className="space-y-4">
+                  <input
+                    type="text"
+                    value={editingSweet.sweet_name}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, sweet_name: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Sweet Name"
+                  />
+                  <input
+                    type="text"
+                    value={editingSweet.category}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, category: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Category"
+                  />
+                  <input
+                    type="number"
+                    value={editingSweet.weight}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, weight: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Weight (in grams)"
+                  />
+                  <input
+                    type="text"
+                    value={editingSweet.flavor || ''}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, flavor: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Flavor (optional)"
+                  />
+                  <input
+                    type="text"
+                    value={editingSweet.location}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, location: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Location"
+                  />
+                  <input
+                    type="text"
+                    value={editingSweet.shop_address}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, shop_address: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Shop Address"
+                  />
+                  <input
+                    type="number"
+                    value={editingSweet.price}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, price: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Price"
+                  />
+                  <input
+                    type="text"
+                    value={editingSweet.type}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, type: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Type"
+                  />
+                  <input
+                    type="number"
+                    value={editingSweet.stock_quantity || 0}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, stock_quantity: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Stock Quantity"
+                    min="0"
+                  />
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={editingSweet.sold}
+                      onChange={(e) => setEditingSweet({
+                        ...editingSweet,
+                        sold: e.target.checked,
+                        stock_quantity: e.target.checked ? 0 : editingSweet.stock_quantity
+                      })}
+                      className="h-4 w-4"
+                    />
+                    <label>Mark as Sold</label>
+                  </div>
+                  <input
+                    type="text"
+                    value={editingSweet.image}
+                    onChange={(e) => setEditingSweet({ ...editingSweet, image: e.target.value })}
+                    className="w-full p-2 border rounded"
+                    placeholder="Image URL"
+                  />
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      onClick={() => setEditingSweet(null)}
+                      className="px-4 py-2 bg-gray-200 rounded"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSave}
+                      className="px-4 py-2 bg-blue-600 text-white rounded"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
