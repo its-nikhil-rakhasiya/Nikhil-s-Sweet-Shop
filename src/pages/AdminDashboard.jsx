@@ -577,29 +577,26 @@ export default function AdminDashboard() {
                   )}
                 </select>
               </div>
-            </div>
 
-            <div className="mt-4">
-              <button
-                onClick={resetFilters}
-                className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-              >
-                Reset Filters
-              </button>
-            </div>
-          </div>
+              <div className="mt-4">
+                <button
+                  onClick={resetFilters}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                >
+                  Reset Filters
+                </button>
 
-          {/* Available Sweets Section */}
-          <SweetTable
-            sweets={filteredSweets.filter(sweet => !sweet.sold)}
-            title="Available Sweets"
-          />
+                {/* Available Sweets Section */}
+                <SweetTable
+                  sweets={filteredSweets.filter(sweet => !sweet.sold)}
+                  title="Available Sweets"
+                />
 
-          {/* Sold Sweets Section */}
-          <SweetTable
-            sweets={filteredSweets.filter(sweet => sweet.sold)}
-            title="Sold Sweets"
-          />
+                {/* Sold Sweets Section */}
+                <SweetTable
+                  sweets={filteredSweets.filter(sweet => sweet.sold)}
+                  title="Sold Sweets"
+                />
 
                 {/* Add Sweet Form Modal */}
                 {showAddSweetForm && (
@@ -814,6 +811,9 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
