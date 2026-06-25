@@ -13,11 +13,11 @@ app.use(cors({
 app.use(express.json());
 
 const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  port: process.env.DB_PORT || 3306,
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'nikhil-sweet-shop',
+  host: process.env.DB_HOST || 'mysql-nikhil-nikhil-sweet-shop.k.aivencloud.com',
+  port: process.env.DB_PORT || 2627,
+  user: process.env.DB_USER || 'avnadmin',
+  password: process.env.DB_PASSWORD || 'AVNS_J2V2Yx8z7jm36V0-gOb',
+  database: process.env.DB_NAME || 'defaultdb',
   ssl: process.env.DB_HOST ? { rejectUnauthorized: false } : undefined
 };
 
